@@ -1,15 +1,16 @@
 import React from 'react';
+import { BookOpen } from 'lucide-react';
 import type { Hymn } from '../types/hymn';
 import { HymnListItem } from './HymnListItem';
-import { EmptyState } from './EmptyState';
-import { BookOpen } from 'lucide-react';
+import { EmptyState } from './ui';
 
 interface HymnListProps {
   hymns: Hymn[];
   emptyTitle?: string;
   emptyDescription?: string;
   emptyActionLabel?: string;
-  onEmptyAction?: () => void;
+  emptyActionTo?: string;
+  matchedSnippetById?: Record<string, string>;
   className?: string;
 }
 
@@ -18,7 +19,8 @@ export const HymnList: React.FC<HymnListProps> = ({
   emptyTitle = 'No hymns found',
   emptyDescription = 'There are no hymns matching your current criteria.',
   emptyActionLabel,
-  onEmptyAction,
+  emptyActionTo,
+  matchedSnippetById,
   className = '',
 }) => {
   if (hymns.length === 0) {
@@ -28,15 +30,22 @@ export const HymnList: React.FC<HymnListProps> = ({
         title={emptyTitle}
         description={emptyDescription}
         actionLabel={emptyActionLabel}
-        onAction={onEmptyAction}
+        actionTo={emptyActionTo}
+        compact
       />
     );
   }
 
   return (
-    <div className={`flex flex-col gap-2.5 sm:gap-3 ${className}`}>
+    <div
+      className={`rounded-[14px] border border-border bg-surface divide-y divide-border overflow-hidden ${className}`}
+    >
       {hymns.map((hymn) => (
-        <HymnListItem key={hymn.id} hymn={hymn} />
+        <HymnListItem
+          key={hymn.id}
+          hymn={hymn}
+          matchedSnippet={matchedSnippetById?.[hymn.id]}
+        />
       ))}
     </div>
   );

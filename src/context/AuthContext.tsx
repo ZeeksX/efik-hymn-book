@@ -25,9 +25,6 @@ interface AuthContextType {
   login: (email: string, name?: string, role?: 'user' | 'admin') => void;
   logout: () => void;
   setAdminRole: (isAdmin: boolean) => void;
-  isAuthModalOpen: boolean;
-  openAuthModal: () => void;
-  closeAuthModal: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -45,8 +42,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Default to signed-in John Doe as shown in mockups
     return DEFAULT_USER;
   });
-
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
 
   useEffect(() => {
     try {
@@ -75,7 +70,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       initials,
     };
     setUser(newUser);
-    setIsAuthModalOpen(false);
   }, []);
 
   const logout = useCallback(() => {
@@ -101,9 +95,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
   }, []);
 
-  const openAuthModal = useCallback(() => setIsAuthModalOpen(true), []);
-  const closeAuthModal = useCallback(() => setIsAuthModalOpen(false), []);
-
   return (
     <AuthContext.Provider
       value={{
@@ -113,9 +104,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         login,
         logout,
         setAdminRole,
-        isAuthModalOpen,
-        openAuthModal,
-        closeAuthModal,
       }}
     >
       {children}

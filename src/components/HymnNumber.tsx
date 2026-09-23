@@ -13,15 +13,15 @@ export const HymnNumber: React.FC<HymnNumberProps> = ({
   className = '',
 }) => {
   const sizeStyles = {
-    sm: 'text-xs px-2 py-0.5 tracking-wider font-semibold',
-    md: 'text-sm px-2.5 py-1 tracking-widest font-semibold',
-    lg: 'text-base px-3 py-1.5 tracking-widest font-bold',
-    hero: 'text-xl sm:text-2xl px-4 py-2 tracking-widest font-bold',
+    sm: 'text-[11px] px-1.5 py-0.5 min-w-[34px]',
+    md: 'text-sm px-2 py-1 min-w-[44px]',
+    lg: 'text-base px-2.5 py-1 min-w-[52px]',
+    hero: 'text-2xl sm:text-3xl px-3.5 py-1.5 tracking-widest',
   };
 
   return (
     <span
-      className={`inline-flex items-center justify-center font-mono rounded-md border border-[var(--border-strong)]/40 bg-[var(--bg-surface-elevated)] text-[var(--accent-gold)] dark:text-[var(--accent-gold)] shadow-xs select-none ${sizeStyles[size]} ${className}`}
+      className={`inline-flex items-center justify-center font-mono font-bold rounded-md border border-border bg-surface-secondary text-accent select-none tabular-nums ${sizeStyles[size]} ${className}`}
       aria-label={`Hymn number ${number}`}
     >
       {formatHymnNumber(number)}

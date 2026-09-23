@@ -1,200 +1,250 @@
 import React, { useState } from 'react';
-import { Settings, Sun, Moon, Monitor, RotateCcw, Check } from 'lucide-react';
+import { Monitor, Moon, Sun, RotateCcw } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { useTheme } from '../context/ThemeContext';
+import { useToast } from '../components/ui';
+import { Button, ConfirmDialog } from '../components/ui';
 import type { TextSize, ThemeMode } from '../types/hymn';
 
+/* ---------------- Switch ---------------- */
+const Switch: React.FC<{ checked: boolean; onChange: (v: boolean) => void; label: string }> = ({
+  checked,
+  onChange,
+  label,
+}) => (
+  <button
+    type="button"
+    role="switch"
+    aria-checked={checked}
+    aria-label={label}
+    onClick={() => onChange(!checked)}
+    className={`relative w-11 h-6 rounded-full transition-colors shrink-0 focus-ring ${
+      checked ? 'bg-primary' : 'bg-border-strong'
+    }`}
+  >
+    <span
+      className={`absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow-sm transition-transform ${
+        checked ? 'translate-x-5' : ''
+      }`}
+    />
+  </button>
+);
+
+/* ---------------- Segmented control ---------------- */
+function Segmented<T extends string>({
+  options,
+  value,
+  onChange,
+  ariaLabel,
+}: {
+  options: { id: T; label: string; icon?: React.ElementType }[];
+  value: T;
+  onChange: (v: T) => void;
+  ariaLabel: string;
+}) {
+  return (
+    <div
+      className="inline-flex items-center gap-1 p-1 rounded-[10px] bg-surface-secondary border border-border"
+      role="group"
+      aria-label={ariaLabel}
+    >
+      {options.map((opt) => {
+        const Icon = opt.icon;
+        const isActive = value === opt.id;
+        return (
+          <button
+            key={opt.id}
+            type="button"
+            onClick={() => onChange(opt.id)}
+            aria-pressed={isActive}
+            className={`inline-flex items-center gap-1.5 h-8 px-3 rounded-lg text-xs font-semibold transition-colors focus-ring ${
+              isActive
+                ? 'bg-surface text-primary shadow-sm'
+                : 'text-muted-foreground hover:text-foreground'
+            }`}
+          >
+            {Icon && <Icon size={14} />}
+            {opt.label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 export const SettingsPage: React.FC = () => {
-  const { readerSettings, updateReaderSettings, resetReaderSettings, setTextSize } = useApp();
+  const { readerSettings, updateReaderSettings, setTextSize, resetReaderSettings, clearRecentlyViewed } = useApp();
   const { theme, setTheme } = useTheme();
-  const [resetDone, setResetDone] = useState(false);
+  const { toast } = useToast();
+  const { favorites, toggleFavorite } = useApp();
+
+  const [confirmClear, setConfirmClear] = useState<'history' | 'favorites' | null>(null);
+
+  const textSizes: { id: TextSize; label: string; desc: string }[] = [
+    { id: 'sm', label: 'Small', desc: '17px' },
+    { id: 'md', label: 'Medium', desc: '19px' },
+    { id: 'lg', label: 'Large', desc: '22px' },
+    { id: 'xl', label: 'Extra Large', desc: '26px' },
+  ];
 
   const handleReset = () => {
     resetReaderSettings();
     setTheme('system');
-    setResetDone(true);
-    setTimeout(() => setResetDone(false), 2000);
+    toast('Preferences reset to default', 'info');
   };
 
-  const textSizes: { id: TextSize; label: string; desc: string }[] = [
-    { id: 'sm', label: 'Small', desc: '16px compact' },
-    { id: 'md', label: 'Medium', desc: '19px standard' },
-    { id: 'lg', label: 'Large', desc: '22px generous' },
-    { id: 'xl', label: 'Extra Large', desc: '26px extra clear' },
-  ];
+  const handleClearFavorites = () => {
+    favorites.forEach((id) => toggleFavorite(id));
+    toast('All favourites cleared', 'info');
+  };
 
-  const themes: { id: ThemeMode; label: string; icon: React.ElementType }[] = [
-    { id: 'light', label: 'Light (Parchment)', icon: Sun },
-    { id: 'dark', label: 'Dark (Charcoal)', icon: Moon },
-    { id: 'system', label: 'System Default', icon: Monitor },
-  ];
+  const Section: React.FC<{ title: string; children: React.ReactNode; className?: string }> = ({
+    title,
+    children,
+    className = '',
+  }) => (
+    <section className={`p-5 sm:p-6 rounded-[14px] border border-border bg-surface space-y-4 ${className}`}>
+      <h2 className="text-h3 font-serif text-foreground">{title}</h2>
+      {children}
+    </section>
+  );
 
   return (
-    <div className="space-y-8 max-w-2xl mx-auto py-2">
-      {/* Header */}
+    <div className="max-w-2xl mx-auto space-y-5">
       <div>
-        <div className="flex items-center gap-2 text-[var(--accent-gold)] text-xs font-semibold uppercase tracking-widest mb-1">
-          <Settings size={14} />
-          <span>Preferences</span>
-        </div>
-        <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[var(--text-primary)]">
-          Application Settings
-        </h1>
-        <p className="mt-1 text-sm text-[var(--text-secondary)]">
-          Customize your reading experience, font sizing, and visual theme.
+        <h1 className="text-h1 text-foreground">Settings</h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Personalise your reading experience.
         </p>
       </div>
 
-      {/* Reading Text Size */}
-      <section className="p-6 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] space-y-4">
+      {/* Reading */}
+      <Section title="Reading">
         <div>
-          <h2 className="font-serif text-base sm:text-lg font-bold text-[var(--text-primary)]">
-            Hymn Lyrics Size
-          </h2>
-          <p className="text-xs sm:text-sm text-[var(--text-secondary)] mt-0.5">
-            Choose a comfortable text scale for standing in church or reading at home.
-          </p>
+          <p className="text-sm font-medium text-foreground mb-2">Text Size</p>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+            {textSizes.map((s) => {
+              const isSelected = readerSettings.textSize === s.id;
+              return (
+                <button
+                  key={s.id}
+                  type="button"
+                  onClick={() => setTextSize(s.id)}
+                  aria-pressed={isSelected}
+                  className={`p-3 rounded-[10px] border text-left transition-colors focus-ring ${
+                    isSelected
+                      ? 'border-primary bg-primary-soft'
+                      : 'border-border bg-input-bg hover:bg-surface-secondary'
+                  }`}
+                >
+                  <span className={`block font-semibold text-sm ${isSelected ? 'text-primary' : 'text-foreground'}`}>
+                    {s.label}
+                  </span>
+                  <span className="block text-[11px] text-subtle-foreground mt-0.5 tabular-nums">{s.desc}</span>
+                </button>
+              );
+            })}
+          </div>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
-          {textSizes.map((s) => {
-            const isSelected = readerSettings.textSize === s.id;
-            return (
-              <button
-                key={s.id}
-                type="button"
-                onClick={() => setTextSize(s.id)}
-                className={`p-3 rounded-xl border text-left transition-all cursor-pointer ${
-                  isSelected
-                    ? 'border-[var(--brand-primary)] bg-[var(--brand-primary-light)] text-[var(--brand-primary)] ring-1 ring-[var(--brand-primary)]'
-                    : 'border-[var(--border-subtle)] bg-[var(--bg-main)] hover:bg-[var(--bg-surface-elevated)] text-[var(--text-primary)]'
-                }`}
-              >
-                <span className="block font-semibold text-sm">{s.label}</span>
-                <span className="block text-[11px] opacity-70 mt-0.5">{s.desc}</span>
-              </button>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* Typography Style */}
-      <section className="p-6 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] space-y-4">
-        <div>
-          <h2 className="font-serif text-base sm:text-lg font-bold text-[var(--text-primary)]">
-            Lyrics Font Style
-          </h2>
-          <p className="text-xs sm:text-sm text-[var(--text-secondary)] mt-0.5">
-            Switch between traditional book serif (Lora) and clean sans-serif (Manrope).
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          <button
-            type="button"
-            onClick={() => updateReaderSettings({ serifLyrics: true })}
-            className={`p-4 rounded-xl border text-left transition-all cursor-pointer ${
-              readerSettings.serifLyrics
-                ? 'border-[var(--brand-primary)] bg-[var(--brand-primary-light)] text-[var(--brand-primary)] ring-1 ring-[var(--brand-primary)]'
-                : 'border-[var(--border-subtle)] bg-[var(--bg-main)] hover:bg-[var(--bg-surface-elevated)] text-[var(--text-primary)]'
-            }`}
-          >
-            <span className="font-serif font-bold text-base block">Serif (Traditional Hymnal)</span>
-            <span className="font-serif italic text-xs text-[var(--text-secondary)] mt-1 block">
-              "Abasi Ibom Andikpon Nkan..."
-            </span>
-          </button>
-
-          <button
-            type="button"
-            onClick={() => updateReaderSettings({ serifLyrics: false })}
-            className={`p-4 rounded-xl border text-left transition-all cursor-pointer ${
-              !readerSettings.serifLyrics
-                ? 'border-[var(--brand-primary)] bg-[var(--brand-primary-light)] text-[var(--brand-primary)] ring-1 ring-[var(--brand-primary)]'
-                : 'border-[var(--border-subtle)] bg-[var(--bg-main)] hover:bg-[var(--bg-surface-elevated)] text-[var(--text-primary)]'
-            }`}
-          >
-            <span className="font-sans font-bold text-base block">Sans-Serif (Modern Editorial)</span>
-            <span className="font-sans text-xs text-[var(--text-secondary)] mt-1 block">
-              "Abasi Ibom Andikpon Nkan..."
-            </span>
-          </button>
-        </div>
-      </section>
-
-      {/* Appearance / Theme */}
-      <section className="p-6 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] space-y-4">
-        <div>
-          <h2 className="font-serif text-base sm:text-lg font-bold text-[var(--text-primary)]">
-            Appearance
-          </h2>
-          <p className="text-xs sm:text-sm text-[var(--text-secondary)] mt-0.5">
-            Select between warm ivory parchment, deep ecclesiastical dark mode, or system default.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
-          {themes.map((t) => {
-            const isSelected = theme === t.id;
-            const Icon = t.icon;
-            return (
-              <button
-                key={t.id}
-                type="button"
-                onClick={() => setTheme(t.id)}
-                className={`p-3.5 rounded-xl border flex items-center gap-2.5 text-left transition-all cursor-pointer ${
-                  isSelected
-                    ? 'border-[var(--brand-primary)] bg-[var(--brand-primary-light)] text-[var(--brand-primary)] font-semibold'
-                    : 'border-[var(--border-subtle)] bg-[var(--bg-main)] hover:bg-[var(--bg-surface-elevated)] text-[var(--text-primary)]'
-                }`}
-              >
-                <Icon size={18} className={isSelected ? 'text-[var(--brand-primary)]' : 'text-[var(--text-tertiary)]'} />
-                <span className="text-xs sm:text-sm">{t.label}</span>
-              </button>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* Keep Screen Awake during reading */}
-      <section className="p-6 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] flex items-center justify-between gap-4">
-        <div>
-          <h2 className="font-serif text-base font-bold text-[var(--text-primary)]">
-            Keep Screen Awake During Hymn Reading
-          </h2>
-          <p className="text-xs sm:text-sm text-[var(--text-secondary)] mt-0.5">
-            Prevents the device screen from dimming while reading lyrics during church service.
-          </p>
-        </div>
-        <label className="relative inline-flex items-center cursor-pointer shrink-0">
-          <input
-            type="checkbox"
-            checked={readerSettings.keepScreenAwake}
-            onChange={(e) => updateReaderSettings({ keepScreenAwake: e.target.checked })}
-            className="sr-only peer"
+        <div className="flex items-center justify-between gap-4 py-1">
+          <div>
+            <p className="text-sm font-medium text-foreground">Show Verse Numbers</p>
+            <p className="text-xs text-muted-foreground mt-0.5">Display numbers beside each verse.</p>
+          </div>
+          <Switch
+            checked={readerSettings.showVerseNumbers}
+            onChange={(v) => updateReaderSettings({ showVerseNumbers: v })}
+            label="Show verse numbers"
           />
-          <div className="w-11 h-6 bg-neutral-300 peer-focus:outline-hidden rounded-md peer dark:bg-neutral-700 peer-checked:after:translate-x-5 peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-xs after:h-5 after:w-5 after:transition-all peer-checked:bg-[var(--brand-primary)]"></div>
-        </label>
-      </section>
+        </div>
 
-      {/* Reset Preferences */}
-      <div className="pt-2 flex items-center justify-between">
-        <button
-          type="button"
-          onClick={handleReset}
-          className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border border-[var(--border-subtle)] hover:border-red-400 text-xs font-semibold text-[var(--text-secondary)] hover:text-[var(--color-error)] transition-colors cursor-pointer"
-        >
+        <div className="flex items-center justify-between gap-4 py-1">
+          <div>
+            <p className="text-sm font-medium text-foreground">Keep Screen Awake</p>
+            <p className="text-xs text-muted-foreground mt-0.5">Prevents the screen dimming while reading in church.</p>
+          </div>
+          <Switch
+            checked={readerSettings.keepScreenAwake}
+            onChange={(v) => updateReaderSettings({ keepScreenAwake: v })}
+            label="Keep screen awake"
+          />
+        </div>
+
+        <div className="flex items-center justify-between gap-4 py-1">
+          <div>
+            <p className="text-sm font-medium text-foreground">Serif Lyrics</p>
+            <p className="text-xs text-muted-foreground mt-0.5">Traditional book serif for hymn text.</p>
+          </div>
+          <Switch
+            checked={readerSettings.serifLyrics}
+            onChange={(v) => updateReaderSettings({ serifLyrics: v })}
+            label="Use serif lyrics"
+          />
+        </div>
+      </Section>
+
+      {/* Appearance */}
+      <Section title="Appearance">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <p className="text-sm font-medium text-foreground">Theme</p>
+          <Segmented
+            ariaLabel="Theme"
+            value={theme}
+            onChange={(v: ThemeMode) => setTheme(v)}
+            options={[
+              { id: 'light' as ThemeMode, label: 'Light', icon: Sun },
+              { id: 'dark' as ThemeMode, label: 'Dark', icon: Moon },
+              { id: 'system' as ThemeMode, label: 'System', icon: Monitor },
+            ]}
+          />
+        </div>
+      </Section>
+
+      {/* Data */}
+      <Section title="Data" className="!border-danger/25">
+        <p className="text-xs text-muted-foreground -mt-2">
+          These actions permanently remove data stored on this device.
+        </p>
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2.5">
+          <Button variant="secondary" size="sm" onClick={() => setConfirmClear('history')}>
+            Clear Recently Viewed
+          </Button>
+          <Button variant="danger" size="sm" onClick={() => setConfirmClear('favorites')}>
+            Clear Local Favourites
+          </Button>
+        </div>
+      </Section>
+
+      {/* Reset */}
+      <div className="flex items-center justify-between pt-1">
+        <Button variant="ghost" size="sm" onClick={handleReset}>
           <RotateCcw size={14} />
-          <span>Reset All Preferences</span>
-        </button>
-
-        {resetDone && (
-          <span className="text-xs text-[var(--color-success)] flex items-center gap-1 animate-in fade-in">
-            <Check size={14} />
-            <span>Preferences reset to default</span>
-          </span>
-        )}
+          Reset All Preferences
+        </Button>
       </div>
+
+      <ConfirmDialog
+        open={confirmClear === 'history'}
+        onClose={() => setConfirmClear(null)}
+        onConfirm={() => {
+          clearRecentlyViewed();
+          toast('Recently viewed cleared', 'info');
+        }}
+        title="Clear Recently Viewed?"
+        message="This removes your reading history from this device. Favourites and settings are not affected."
+        confirmLabel="Clear History"
+        destructive
+      />
+      <ConfirmDialog
+        open={confirmClear === 'favorites'}
+        onClose={() => setConfirmClear(null)}
+        onConfirm={handleClearFavorites}
+        title="Clear Local Favourites?"
+        message="This removes all saved favourites from this device. This cannot be undone."
+        confirmLabel="Clear Favourites"
+        destructive
+      />
     </div>
   );
 };

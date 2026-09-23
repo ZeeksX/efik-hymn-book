@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useId } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Search, X, Hash } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 
 interface SearchBarProps {
-  initialValue?: string;
+  value?: string;
   onSearchChange?: (val: string) => void;
+  onSubmit?: (val: string) => void;
   autoFocus?: boolean;
   size?: 'normal' | 'large';
   placeholder?: string;
@@ -14,100 +15,91 @@ interface SearchBarProps {
 }
 
 export const SearchBar: React.FC<SearchBarProps> = ({
-  initialValue = '',
+  value,
   onSearchChange,
+  onSubmit,
   autoFocus = false,
   size = 'normal',
-  placeholder = 'Search hymn number, title or lyrics...',
+  placeholder = 'Search number, title or lyrics...',
   showGoToShortcut = true,
   className = '',
 }) => {
-  const [query, setQuery] = useState(initialValue);
   const navigate = useNavigate();
   const { openGoToHymn, addRecentSearch } = useApp();
+  const internalState = useState(value ?? '');
+  const [query, setQuery] = internalState;
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const val = e.target.value;
-    setQuery(val);
-    if (onSearchChange) {
+  // Controlled when both value + onSearchChange are provided
+  const isControlled = value !== undefined && onSearchChange !== undefined;
+  const current = isControlled ? value : query;
+  const setCurrent = (val: string) => {
+    if (isControlled) {
       onSearchChange(val);
+    } else {
+      setQuery(val);
     }
   };
 
-  const handleClear = () => {
-    setQuery('');
-    if (onSearchChange) {
-      onSearchChange('');
-    }
-  };
+  const searchId = useId();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const trimmed = query.trim();
-    if (!trimmed) return;
-
-    addRecentSearch(trimmed);
-
-    // If query is pure number, go straight to that hymn if valid or search
-    const parsedNum = parseInt(trimmed, 10);
-    if (!isNaN(parsedNum) && String(parsedNum) === trimmed) {
-      navigate(`/search?q=${encodeURIComponent(trimmed)}`);
-    } else {
-      navigate(`/search?q=${encodeURIComponent(trimmed)}`);
+    const trimmed = current.trim();
+    if (onSubmit) {
+      onSubmit(trimmed);
+      return;
     }
+    if (!trimmed) return;
+    addRecentSearch(trimmed);
+    navigate(`/search?q=${encodeURIComponent(trimmed)}`);
+    if (!isControlled) setQuery('');
   };
 
   const isLarge = size === 'large';
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className={`relative flex items-center w-full ${className}`}
-      role="search"
-    >
+    <form onSubmit={handleSubmit} className={`relative flex items-center w-full ${className}`} role="search">
       <div className="relative w-full flex items-center">
-        {/* Search Icon */}
-        <div className="absolute left-3.5 sm:left-4.5 text-[var(--text-tertiary)] pointer-events-none flex items-center">
-          <Search size={isLarge ? 22 : 18} />
-        </div>
+        <span className="absolute left-3.5 sm:left-4 text-subtle-foreground pointer-events-none">
+          <Search size={isLarge ? 20 : 17} />
+        </span>
 
-        {/* Search Input */}
         <input
+          id={searchId}
           type="search"
-          value={query}
-          onChange={handleInputChange}
+          value={current}
+          onChange={(e) => setCurrent(e.target.value)}
           autoFocus={autoFocus}
           placeholder={placeholder}
           aria-label="Search hymns"
-          className={`w-full rounded-2xl border transition-all duration-200 bg-[var(--bg-surface)] text-[var(--text-primary)] placeholder-[var(--text-tertiary)] focus:outline-hidden ${
+          className={`w-full rounded-[12px] border bg-surface text-foreground placeholder:text-subtle-foreground transition-colors focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/15 ${
             isLarge
-              ? 'py-4 pl-12 pr-28 sm:pr-36 text-base sm:text-lg border-[var(--border-strong)] shadow-xs focus:border-[var(--brand-primary)] focus:ring-2 focus:ring-[var(--brand-primary)]/20'
-              : 'py-2.5 pl-10 pr-20 text-sm border-[var(--border-subtle)] focus:border-[var(--brand-primary)] focus:ring-1 focus:ring-[var(--brand-primary)]/20'
-          }`}
+              ? 'h-13 sm:h-14 pl-11 sm:pl-12 pr-24 sm:pr-28 text-base sm:text-lg'
+              : 'h-11 pl-10 pr-24 text-sm'
+          } border-border focus:border-primary`}
         />
 
-        {/* Right action tools: Clear button & Go to number shortcut */}
-        <div className="absolute right-2.5 sm:right-3.5 flex items-center gap-1.5">
-          {query && (
+        {/* Clear + Go to # */}
+        <div className="absolute right-2 sm:right-2.5 flex items-center gap-1.5">
+          {current && (
             <button
               type="button"
-              onClick={handleClear}
-              aria-label="Clear search query"
-              className="p-1 rounded-md text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-elevated)] transition-colors cursor-pointer"
+              onClick={() => setCurrent('')}
+              aria-label="Clear search"
+              className="p-1.5 rounded-md text-subtle-foreground hover:text-foreground hover:bg-surface-secondary transition-colors focus-ring"
             >
-              <X size={16} />
+              <X size={15} />
             </button>
           )}
-
           {showGoToShortcut && (
             <button
               type="button"
               onClick={openGoToHymn}
               title="Go to specific hymn number"
-              aria-label="Go to hymn number dialog"
-              className="hidden sm:inline-flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-[var(--bg-surface-elevated)] hover:bg-[var(--border-subtle)] text-[var(--accent-gold)] border border-[var(--border-subtle)] transition-colors cursor-pointer"
+              aria-label="Go to Hymn dialog"
+              className="hidden sm:inline-flex items-center gap-1 h-7 px-2 rounded-md text-[11px] font-semibold bg-surface-secondary hover:bg-border text-accent border border-border transition-colors focus-ring"
             >
-              <Hash size={13} />
+              <Hash size={12} />
               <span>Go to #</span>
             </button>
           )}

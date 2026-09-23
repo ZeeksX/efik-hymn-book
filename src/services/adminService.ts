@@ -137,8 +137,8 @@ const SEED_CORRECTIONS: Correction[] = [
     hymnNumber: 18,
     hymnTitle: 'Abasi Nto',
     type: 'translation',
-    currentText: 'The Lord is my rock',
-    suggestedText: 'The Lord is my refuge and strength',
+    currentText: 'Come Let Us Worship',
+    suggestedText: 'O Come, Let Us Worship',
     message: 'Alternate English title should match the Presbyterian 1928 edition.',
     submittedBy: 'Rev. Dr. Bassey',
     submittedAt: daysAgo(2),
@@ -148,7 +148,7 @@ const SEED_CORRECTIONS: Correction[] = [
     id: 'corr-4',
     hymnId: '23',
     hymnNumber: 23,
-    hymnTitle: 'Ikwọ mbufo',
+    hymnTitle: 'Jesus Emeyere Mi',
     type: 'other',
     currentText: '—',
     suggestedText: '—',
@@ -224,6 +224,33 @@ export const adminService = {
     const statuses = loadStatuses();
     statuses[hymnId] = status;
     saveStatuses(statuses);
+  },
+
+  /** Persist full hymn edits (drafts). Swapped for an API call when a backend exists. */
+  saveHymnDraft(hymn: Hymn, status: ContentStatus): void {
+    const statuses = loadStatuses();
+    statuses[hymn.id] = status;
+    saveStatuses(statuses);
+    try {
+      const key = 'efik_hymns_admin_drafts';
+      const raw = localStorage.getItem(key);
+      const drafts: Record<string, Hymn> = raw ? JSON.parse(raw) : {};
+      drafts[hymn.id] = hymn;
+      localStorage.setItem(key, JSON.stringify(drafts));
+    } catch {
+      // storage unavailable
+    }
+  },
+
+  getHymnDraft(hymnId: string): Hymn | undefined {
+    try {
+      const raw = localStorage.getItem('efik_hymns_admin_drafts');
+      if (!raw) return undefined;
+      const drafts: Record<string, Hymn> = JSON.parse(raw);
+      return drafts[hymnId];
+    } catch {
+      return undefined;
+    }
   },
 
   /* ---------------- Categories ---------------- */

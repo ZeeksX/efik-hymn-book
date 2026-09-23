@@ -7,47 +7,46 @@ export const MobileNavigation: React.FC = () => {
   const { favorites } = useApp();
 
   const navItemClass = ({ isActive }: { isActive: boolean }) =>
-    `flex flex-col items-center justify-center flex-1 py-2 text-xs font-medium transition-colors ${
+    `flex flex-col items-center justify-center flex-1 py-2 gap-0.5 text-[11px] font-medium transition-colors rounded-lg focus-ring ${
       isActive
-        ? 'text-[var(--brand-primary)] font-bold'
-        : 'text-[var(--text-tertiary)] hover:text-[var(--text-primary)]'
+        ? 'text-primary font-semibold'
+        : 'text-subtle-foreground hover:text-foreground'
     }`;
 
   return (
     <nav
-      className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-[var(--bg-surface)]/95 backdrop-blur-md border-t border-[var(--border-subtle)] px-2 safe-area-pb"
+      className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-surface border-t border-border px-2 safe-area-pb"
       aria-label="Mobile Navigation"
     >
-      <div className="flex items-center justify-around h-16 max-w-lg mx-auto">
-        {/* Home */}
-        <NavLink to="/" end className={navItemClass}>
-          <Home size={21} className="mb-1" />
+      <div className="flex items-stretch justify-around h-16 max-w-lg mx-auto">
+        <NavLink to="/" end className={navItemClass} aria-label="Home">
+          <Home size={20} strokeWidth={1.75} />
           <span>Home</span>
         </NavLink>
 
-        {/* Hymns */}
-        <NavLink to="/hymns" className={navItemClass}>
-          <BookOpen size={21} className="mb-1" />
+        <NavLink to="/hymns" className={navItemClass} aria-label="Hymns">
+          <BookOpen size={20} />
           <span>Hymns</span>
         </NavLink>
 
-        {/* Search */}
-        <NavLink to="/search" className={navItemClass}>
-          <Search size={21} className="mb-1" />
+        <NavLink to="/search" className={navItemClass} aria-label="Search">
+          <Search size={20} />
           <span>Search</span>
         </NavLink>
 
-        {/* Favorites */}
-        <NavLink to="/favorites" className={navItemClass}>
-          <div className="relative mb-1">
-            <Heart size={21} />
+        <NavLink to="/favorites" className={navItemClass} aria-label="Favourites">
+          <span className="relative">
+            <Heart size={20} />
             {favorites.length > 0 && (
-              <span className="absolute -top-1 -right-2 text-[9px] font-bold px-1 rounded-xs bg-[var(--accent-gold)] text-white min-w-[14px] text-center">
-                {favorites.length}
+              <span
+                className="absolute -top-1.5 -right-2 min-w-[15px] h-[15px] px-0.5 rounded-full bg-accent text-white text-[9px] font-bold flex items-center justify-center"
+                aria-hidden
+              >
+                {favorites.length > 9 ? '9+' : favorites.length}
               </span>
             )}
-          </div>
-          <span>Favorites</span>
+          </span>
+          <span>Favourites</span>
         </NavLink>
       </div>
     </nav>

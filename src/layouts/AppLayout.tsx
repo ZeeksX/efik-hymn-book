@@ -4,58 +4,46 @@ import { AppHeader } from '../components/AppHeader';
 import { MobileNavigation } from '../components/MobileNavigation';
 import { GoToHymnDialog } from '../components/GoToHymnDialog';
 import { OfflineIndicator } from '../components/OfflineIndicator';
-import { AuthModal } from '../components/AuthModal';
 
 export const AppLayout: React.FC = () => {
   return (
-    <div className="min-h-screen flex flex-col bg-[var(--bg-main)] text-[var(--text-primary)] transition-colors">
-      {/* Offline Connectivity Status Banner */}
+    <div className="min-h-screen flex flex-col bg-background text-foreground">
       <OfflineIndicator />
-
-      {/* Top Header */}
       <AppHeader />
 
-      {/* Main Content Area with padding for bottom nav on mobile */}
-      <main className="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 py-6 pb-24 md:pb-12">
+      {/* Content area — generous bottom clearance for mobile nav */}
+      <main className="flex-1 w-full max-w-6xl mx-auto px-4 sm:px-6 py-6 sm:py-8 pb-28 md:pb-16">
         <Outlet />
       </main>
 
-      {/* Reverent and Quiet Footer */}
-      <footer className="border-t border-[var(--border-subtle)] bg-[var(--bg-surface)] py-8 transition-colors mb-16 md:mb-0">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[var(--text-tertiary)]">
-          <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-center sm:text-left">
-            <span className="font-serif font-bold text-[var(--text-primary)]">
-              Efik Hymn Book
-            </span>
-            <span className="hidden sm:inline">•</span>
+      {/* Quiet footer */}
+      <footer className="border-t border-border bg-surface py-8 mb-16 md:mb-0">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
+          <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 text-center sm:text-left">
+            <span className="font-serif font-bold text-foreground">Efik Hymn Book</span>
+            <span className="hidden sm:inline text-border-strong">•</span>
             <span>Digitized for church worship, personal devotion & choir ministry</span>
           </div>
 
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            <Link to="/about" className="hover:text-[var(--text-primary)] transition-colors">
+          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+            <Link to="/about" className="hover:text-foreground transition-colors focus-ring rounded-sm">
               About & Sources
             </Link>
-            <Link to="/privacy" className="hover:text-[var(--text-primary)] transition-colors">
+            <Link to="/privacy" className="hover:text-foreground transition-colors focus-ring rounded-sm">
               Privacy Policy
             </Link>
-            <Link to="/terms" className="hover:text-[var(--text-primary)] transition-colors">
+            <Link to="/terms" className="hover:text-foreground transition-colors focus-ring rounded-sm">
               Terms & Conditions
             </Link>
-            <Link to="/settings" className="hover:text-[var(--text-primary)] transition-colors">
+            <Link to="/settings" className="hover:text-foreground transition-colors focus-ring rounded-sm">
               Settings
             </Link>
           </div>
         </div>
       </footer>
 
-      {/* Mobile Navigation */}
       <MobileNavigation />
-
-      {/* Global Quick Hymn Modal */}
       <GoToHymnDialog />
-
-      {/* Global Auth Modal */}
-      <AuthModal />
     </div>
   );
 };

@@ -31,4 +31,5 @@ export interface ReaderSettings {
   textSize: TextSize;
   keepScreenAwake: boolean;
   serifLyrics: boolean;
+  showVerseNumbers: boolean;
 }

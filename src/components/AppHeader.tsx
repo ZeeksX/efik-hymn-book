@@ -1,204 +1,130 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router-dom';
-import { BookOpen, Search, Heart, ChevronDown, Settings, LogOut, Shield, User as UserIcon } from 'lucide-react';
+import { BookOpen, Search, Heart } from 'lucide-react';
 import { useApp } from '../context/AppContext';
 import { useAuth } from '../context/AuthContext';
+import { useToast } from './ui';
 import { ThemeToggle } from './ThemeToggle';
+import { AccountSheet } from './AccountSheet';
 
 export const AppHeader: React.FC = () => {
-  const { favorites } = useApp();
-  const { user, isAuthenticated, logout, openAuthModal, setAdminRole } = useAuth();
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const { favorites, openGoToHymn } = useApp();
+  const { user, isAuthenticated, logout } = useAuth();
+  const [accountOpen, setAccountOpen] = useState(false);
   const navigate = useNavigate();
-
-  // Close dropdown on click outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setDropdownOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  const { toast } = useToast();
 
   const navLinkClasses = ({ isActive }: { isActive: boolean }) =>
-    `relative py-1 text-sm font-medium transition-colors ${
+    `relative py-1 text-sm font-medium transition-colors focus-ring rounded-md ${
       isActive
-        ? 'text-[var(--brand-primary)] font-semibold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[var(--brand-primary)]'
-        : 'text-[var(--text-secondary)] hover:text-[var(--text-primary)]'
+        ? 'text-primary font-semibold after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-primary after:rounded-full'
+        : 'text-muted-foreground hover:text-foreground'
     }`;
 
+  const iconBtn =
+    'p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-surface-secondary transition-colors focus-ring';
+
+  const handleSignOut = () => {
+    setAccountOpen(false);
+    logout();
+    toast('Signed out', 'info');
+    navigate('/');
+  };
+
   return (
-    <header className="sticky top-0 z-40 w-full bg-[var(--bg-surface)] border-b border-[var(--border-subtle)] transition-colors">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
-        {/* Logo / Wordmark */}
-        <Link
-          to="/"
-          className="flex items-center gap-2.5 group shrink-0"
-          aria-label="Efik Hymn Book Home"
-        >
-          <div className="w-8 h-8 rounded-xl flex items-center justify-center bg-[var(--brand-primary)] text-white shadow-xs group-hover:bg-[var(--brand-primary-hover)] transition-colors">
-            <BookOpen size={18} />
-          </div>
-          <span className="font-serif font-bold text-base sm:text-lg tracking-tight text-[var(--text-primary)]">
-            Efik Hymn Book
-          </span>
-        </Link>
-
-        {/* Center Navigation Links matching mockup */}
-        <nav className="hidden md:flex items-center gap-8" aria-label="Main Navigation">
-          <NavLink to="/hymns" className={navLinkClasses}>
-            Hymns
-          </NavLink>
-          <NavLink to="/categories" className={navLinkClasses}>
-            Categories
-          </NavLink>
-          <NavLink to="/about" className={navLinkClasses}>
-            About
-          </NavLink>
-        </nav>
-
-        {/* Right Actions matching mockup */}
-        <div className="flex items-center gap-2 sm:gap-3">
-          {/* Search Icon */}
+    <>
+      <header className="sticky top-0 z-40 w-full bg-surface border-b border-border transition-colors">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-3">
+          {/* Logo / wordmark */}
           <Link
-            to="/search"
-            aria-label="Search hymns"
-            title="Search hymns"
-            className="p-2 rounded-xl text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-elevated)] transition-colors"
+            to="/"
+            className="flex items-center gap-2.5 shrink-0 focus-ring rounded-lg"
+            aria-label="Efik Hymn Book Home"
           >
-            <Search size={18} />
+            <span className="w-8 h-8 rounded-[10px] flex items-center justify-center bg-primary text-primary-foreground">
+              <BookOpen size={17} strokeWidth={1.75} />
+            </span>
+            <span className="font-serif font-bold text-base sm:text-lg tracking-tight text-foreground">
+              Efik Hymn Book
+            </span>
           </Link>
 
-          {/* Favorites Heart Icon */}
-          <Link
-            to="/favorites"
-            aria-label="Favourites"
-            title="My Favourites"
-            className="relative p-2 rounded-xl text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-elevated)] transition-colors"
-          >
-            <Heart size={18} />
-            {favorites.length > 0 && (
-              <span className="absolute top-1 right-1 w-2 h-2 rounded-xs bg-[var(--accent-gold)]"></span>
-            )}
-          </Link>
+          {/* Desktop navigation */}
+          <nav className="hidden md:flex items-center gap-7" aria-label="Main Navigation">
+            <NavLink to="/hymns" className={navLinkClasses}>Hymns</NavLink>
+            <NavLink to="/categories" className={navLinkClasses}>Categories</NavLink>
+            <NavLink to="/about" className={navLinkClasses}>About</NavLink>
+          </nav>
 
-          {/* Theme Toggle */}
-          <ThemeToggle />
+          {/* Right actions */}
+          <div className="flex items-center gap-1 sm:gap-1.5">
+            {/* Go to Hymn — desktop quick action */}
+            <button
+              type="button"
+              onClick={openGoToHymn}
+              title="Go to Hymn (Ctrl+K)"
+              aria-label="Go to Hymn"
+              className="hidden md:inline-flex items-center gap-2 h-9 px-3 rounded-lg border border-border bg-surface-secondary text-xs font-semibold text-muted-foreground hover:text-foreground hover:border-border-strong transition-colors focus-ring"
+            >
+              <Search size={14} />
+              <span>Go to Hymn</span>
+              <kbd className="hidden lg:inline font-mono text-[10px] px-1.5 py-0.5 rounded border border-border bg-surface text-subtle-foreground">
+                Ctrl K
+              </kbd>
+            </button>
 
-          {/* User Auth Section */}
-          {isAuthenticated && user ? (
-            <div className="relative" ref={dropdownRef}>
+            <Link to="/search" aria-label="Search hymns" title="Search" className={`${iconBtn} md:hidden`}>
+              <Search size={19} />
+            </Link>
+
+            <Link to="/favorites" aria-label="Favourites" title="Favourites" className={`${iconBtn} relative hidden sm:inline-flex`}>
+              <Heart size={19} />
+              {favorites.length > 0 && (
+                <span
+                  className="absolute -top-0.5 -right-0.5 min-w-[16px] h-4 px-1 rounded-full bg-accent text-white text-[9px] font-bold flex items-center justify-center"
+                  aria-hidden
+                >
+                  {favorites.length > 9 ? '9+' : favorites.length}
+                </span>
+              )}
+            </Link>
+
+            <ThemeToggle />
+
+            {/* Account */}
+            {isAuthenticated && user ? (
               <button
                 type="button"
-                onClick={() => setDropdownOpen((prev) => !prev)}
-                className="flex items-center gap-2 p-1 pl-1.5 pr-2 rounded-xl hover:bg-[var(--bg-surface-elevated)] border border-[var(--border-subtle)] transition-colors cursor-pointer"
-                aria-expanded={dropdownOpen}
+                onClick={() => setAccountOpen(true)}
+                className="flex items-center gap-2 p-1 pr-2 rounded-lg hover:bg-surface-secondary border border-border transition-colors focus-ring"
+                aria-haspopup="dialog"
+                aria-expanded={accountOpen}
+                aria-label="Open account menu"
               >
-                <div className="w-7 h-7 rounded-xl bg-[var(--brand-primary)] text-white text-xs font-bold flex items-center justify-center">
+                <span className="w-7 h-7 rounded-md bg-primary text-primary-foreground text-[11px] font-bold flex items-center justify-center">
                   {user.initials}
-                </div>
-                <span className="hidden sm:inline text-xs font-semibold text-[var(--text-primary)]">
+                </span>
+                <span className="hidden lg:inline text-xs font-semibold text-foreground max-w-[90px] truncate">
                   {user.name}
                 </span>
-                <ChevronDown size={14} className="text-[var(--text-tertiary)]" />
               </button>
-
-              {/* User Dropdown Menu */}
-              {dropdownOpen && (
-                <div className="absolute right-0 mt-2 w-56 bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-2xl shadow-xl py-2 z-50 animate-in fade-in">
-                  <div className="px-4 py-2 border-b border-[var(--border-subtle)]">
-                    <p className="text-xs font-semibold text-[var(--text-primary)] truncate">
-                      {user.name}
-                    </p>
-                    <p className="text-[11px] text-[var(--text-tertiary)] truncate">
-                      {user.email}
-                    </p>
-                    <span className="inline-block mt-1 px-1.5 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider bg-[var(--brand-primary-light)] text-[var(--brand-primary)]">
-                      {user.role}
-                    </span>
-                  </div>
-
-                  <Link
-                    to="/favorites"
-                    onClick={() => setDropdownOpen(false)}
-                    className="flex items-center gap-2.5 px-4 py-2 text-xs text-[var(--text-primary)] hover:bg-[var(--bg-surface-elevated)] transition-colors"
-                  >
-                    <Heart size={15} className="text-red-500" />
-                    <span>My Favourites</span>
-                  </Link>
-
-                  <Link
-                    to="/settings"
-                    onClick={() => setDropdownOpen(false)}
-                    className="flex items-center gap-2.5 px-4 py-2 text-xs text-[var(--text-primary)] hover:bg-[var(--bg-surface-elevated)] transition-colors"
-                  >
-                    <Settings size={15} className="text-[var(--text-tertiary)]" />
-                    <span>Settings</span>
-                  </Link>
-
-                  <Link
-                    to="/admin"
-                    onClick={() => {
-                      if (user.role !== 'admin') setAdminRole(true);
-                      setDropdownOpen(false);
-                    }}
-                    className="flex items-center gap-2.5 px-4 py-2 text-xs text-[var(--text-primary)] hover:bg-[var(--bg-surface-elevated)] transition-colors"
-                  >
-                    <Shield size={15} className="text-[var(--accent-gold)]" />
-                    <span>Admin Dashboard</span>
-                  </Link>
-
-                  <div className="my-1 border-t border-[var(--border-subtle)]"></div>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setAdminRole(user.role !== 'admin');
-                    }}
-                    className="w-full text-left flex items-center gap-2.5 px-4 py-2 text-[11px] text-[var(--text-secondary)] hover:bg-[var(--bg-surface-elevated)] transition-colors cursor-pointer"
-                  >
-                    <UserIcon size={14} />
-                    <span>Switch to {user.role === 'admin' ? 'User' : 'Admin'} Role</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      logout();
-                      setDropdownOpen(false);
-                      navigate('/');
-                    }}
-                    className="w-full text-left flex items-center gap-2.5 px-4 py-2 text-xs text-[var(--color-error)] hover:bg-[var(--bg-surface-elevated)] transition-colors cursor-pointer"
-                  >
-                    <LogOut size={15} />
-                    <span>Sign Out</span>
-                  </button>
-                </div>
-              )}
-            </div>
-          ) : (
-            <div className="flex items-center gap-2">
-              <button
-                type="button"
-                onClick={openAuthModal}
-                className="px-3 py-1.5 rounded-xl text-xs font-semibold text-[var(--text-primary)] hover:bg-[var(--bg-surface-elevated)] transition-colors cursor-pointer"
+            ) : (
+              <Link
+                to="/login"
+                className="inline-flex items-center h-9 px-3.5 rounded-lg bg-primary text-primary-foreground hover:bg-primary-hover text-xs font-semibold transition-colors focus-ring"
               >
                 Sign In
-              </button>
-              <button
-                type="button"
-                onClick={openAuthModal}
-                className="px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-[var(--brand-primary)] text-white hover:bg-[var(--brand-primary-hover)] transition-colors cursor-pointer shadow-xs"
-              >
-                Create Account
-              </button>
-            </div>
-          )}
+              </Link>
+            )}
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
+
+      <AccountSheet
+        open={accountOpen}
+        onClose={() => setAccountOpen(false)}
+        onSignOut={handleSignOut}
+      />
+    </>
   );
 };

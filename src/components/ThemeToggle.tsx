@@ -19,17 +19,15 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({
       onClick={toggleTheme}
       aria-label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
       title={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
-      className={`inline-flex items-center gap-2 p-2 rounded-lg text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-elevated)] transition-colors cursor-pointer ${className}`}
+      className={`inline-flex items-center gap-2 p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-surface-secondary transition-colors focus-ring ${className}`}
     >
       {isDark ? (
-        <Sun size={19} className="text-[var(--accent-gold)]" />
+        <Sun size={19} className="text-accent" />
       ) : (
-        <Moon size={19} className="text-[var(--text-secondary)]" />
+        <Moon size={19} />
       )}
       {showText && (
-        <span className="text-sm font-medium">
-          {isDark ? 'Light Mode' : 'Dark Mode'}
-        </span>
+        <span className="text-sm font-medium">{isDark ? 'Light Mode' : 'Dark Mode'}</span>
       )}
     </button>
   );

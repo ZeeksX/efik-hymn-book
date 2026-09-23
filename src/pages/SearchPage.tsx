@@ -1,54 +1,62 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
-import { Search, X, Heart, ArrowRight } from 'lucide-react';
+import React, { useEffect, useMemo, useState } from 'react';
+import { useSearchParams, Link } from 'react-router-dom';
+import { Search, History, X, Clock } from 'lucide-react';
 import { searchService } from '../services/searchService';
 import type { SearchMatch } from '../services/searchService';
 import { useApp } from '../context/AppContext';
-import { getCategoryBadgeClasses } from '../data/categories';
-import { EmptyState } from '../components/EmptyState';
+import { HymnList } from '../components/HymnList';
+import { EmptyState } from '../components/ui';
 
 type SearchTab = 'all' | 'titles' | 'lyrics' | 'categories';
 
 export const SearchPage: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const navigate = useNavigate();
-  const initialQuery = searchParams.get('q') || 'Abasi';
-  const [query, setQuery] = useState(initialQuery);
-  const [activeTab, setActiveTab] = useState<SearchTab>('all');
-  const [displayLimit, setDisplayLimit] = useState(10);
+  const urlQuery = searchParams.get('q') ?? '';
+  const activeTab = (searchParams.get('type') as SearchTab) || 'all';
+  const [inputValue, setInputValue] = useState(urlQuery);
+  const [displayLimit, setDisplayLimit] = useState(15);
 
-  const { isFavorite, toggleFavorite, addRecentSearch } = useApp();
+  const { addRecentSearch, recentSearches, clearRecentSearches } = useApp();
 
   useEffect(() => {
-    const q = searchParams.get('q');
-    if (q !== null) {
-      setQuery(q);
-    }
-  }, [searchParams]);
+    setInputValue(urlQuery);
+  }, [urlQuery]);
+
+  const setParams = (q: string, type: SearchTab) => {
+    const next = new URLSearchParams();
+    if (q) next.set('q', q);
+    if (type !== 'all') next.set('type', type);
+    setSearchParams(next);
+  };
 
   const allMatches: SearchMatch[] = useMemo(() => {
-    if (!query.trim()) return [];
-    return searchService.search(query);
-  }, [query]);
+    if (!urlQuery.trim()) return [];
+    return searchService.search(urlQuery);
+  }, [urlQuery]);
 
-  // Tab categorization
-  const titleMatches = useMemo(() => {
-    const q = query.toLowerCase();
-    return allMatches.filter(
-      (m) =>
-        m.hymn.title.toLowerCase().includes(q) ||
-        (m.hymn.alternateTitle && m.hymn.alternateTitle.toLowerCase().includes(q))
-    );
-  }, [allMatches, query]);
+  // Exact number match jumps to the top naturally via score; surface it if present
+  const numberMatch = useMemo(
+    () => allMatches.find((m) => m.matchField === 'number' && m.score >= 1000),
+    [allMatches]
+  );
 
-  const lyricMatches = useMemo(() => {
-    return allMatches.filter((m) => m.matchField === 'lyrics');
-  }, [allMatches]);
+  const titleMatches = useMemo(
+    () =>
+      allMatches.filter(
+        (m) =>
+          m.matchField === 'exact-title' ||
+          m.matchField === 'title-prefix' ||
+          m.matchField === 'title'
+      ),
+    [allMatches]
+  );
 
-  const categoryMatches = useMemo(() => {
-    const q = query.toLowerCase();
-    return allMatches.filter((m) => m.hymn.category.toLowerCase().includes(q));
-  }, [allMatches, query]);
+  const lyricMatches = useMemo(() => allMatches.filter((m) => m.matchField === 'lyrics'), [allMatches]);
+
+  const categoryMatches = useMemo(
+    () => allMatches.filter((m) => m.matchField === 'category' || m.matchField === 'tag'),
+    [allMatches]
+  );
 
   const currentTabMatches = useMemo(() => {
     if (activeTab === 'titles') return titleMatches;
@@ -57,196 +65,174 @@ export const SearchPage: React.FC = () => {
     return allMatches;
   }, [activeTab, allMatches, titleMatches, lyricMatches, categoryMatches]);
 
-  const handleSearchSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (query.trim()) {
-      setSearchParams({ q: query.trim() });
-      addRecentSearch(query.trim());
-      setDisplayLimit(10);
-    }
+    const trimmed = inputValue.trim();
+    setParams(trimmed, activeTab);
+    if (trimmed) addRecentSearch(trimmed);
+    setDisplayLimit(15);
   };
+
+  const snippetById = useMemo(() => {
+    const map: Record<string, string> = {};
+    currentTabMatches.forEach((m) => {
+      if (m.matchedSnippet) map[m.hymn.id] = m.matchedSnippet;
+    });
+    return map;
+  }, [currentTabMatches]);
 
   const visibleMatches = currentTabMatches.slice(0, displayLimit);
 
+  const tabBtn = (tab: SearchTab, label: string, count: number) => (
+    <button
+      key={tab}
+      type="button"
+      onClick={() => setParams(urlQuery, tab)}
+      aria-pressed={activeTab === tab}
+      className={`h-8 px-3.5 rounded-full text-xs font-semibold border transition-colors focus-ring ${
+        activeTab === tab
+          ? 'bg-primary text-primary-foreground border-primary'
+          : 'bg-surface text-muted-foreground border-border hover:text-foreground hover:border-border-strong'
+      }`}
+    >
+      {label} <span className="opacity-70 tabular-nums">({count})</span>
+    </button>
+  );
+
   return (
-    <div className="space-y-6 max-w-4xl mx-auto">
-      {/* Top Header & Search Bar Row matching Screen 4 */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="font-serif text-3xl sm:text-4xl font-bold text-[var(--text-primary)]">
-            Search Results
-          </h1>
-          <p className="mt-1 text-sm text-[var(--text-secondary)]">
-            {query.trim()
-              ? `Showing results for "${query}"`
-              : 'Enter a keyword, hymn number, or phrase to search.'}
-          </p>
-        </div>
+    <div className="max-w-3xl mx-auto space-y-6">
+      {/* Header + prominent search */}
+      <div>
+        <h1 className="text-h1 text-foreground">Search</h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Find hymns by number, title, lyrics or category.
+        </p>
+      </div>
 
-        {/* Search Form on Right */}
-        <form onSubmit={handleSearchSubmit} className="flex items-center gap-2 max-w-md w-full sm:w-auto">
-          <div className="relative flex-1 sm:w-64">
-            <Search
-              size={16}
-              className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[var(--text-tertiary)]"
-            />
-            <input
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search hymns..."
-              className="w-full text-xs sm:text-sm pl-9 pr-8 py-2.5 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-subtle)] text-[var(--text-primary)] focus:outline-hidden focus:border-[var(--brand-primary)]"
-            />
-            {query && (
-              <button
-                type="button"
-                onClick={() => setQuery('')}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-[var(--text-tertiary)] hover:text-[var(--text-primary)] cursor-pointer"
-              >
-                <X size={14} />
-              </button>
-            )}
+      <form onSubmit={handleSubmit} className="flex items-center gap-2" role="search">
+        <div className="relative flex-1">
+          <Search size={17} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-subtle-foreground pointer-events-none" />
+          <input
+            type="search"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            placeholder="Search number, title or lyrics..."
+            aria-label="Search hymns"
+            className="w-full h-11 pl-10 pr-10 rounded-[12px] border border-border bg-surface text-foreground placeholder:text-subtle-foreground focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/15 transition-colors"
+          />
+          {inputValue && (
+            <button
+              type="button"
+              onClick={() => {
+                setInputValue('');
+                setParams('', activeTab);
+              }}
+              aria-label="Clear search"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 rounded-md text-subtle-foreground hover:text-foreground transition-colors"
+            >
+              <X size={15} />
+            </button>
+          )}
+        </div>
+      </form>
+
+      {/* Recent searches — only when no active query */}
+      {!urlQuery && recentSearches.length > 0 && (
+        <section aria-labelledby="recent-searches">
+          <div className="flex items-center justify-between mb-2.5">
+            <h2 id="recent-searches" className="flex items-center gap-2 text-sm font-semibold text-foreground">
+              <Clock size={14} className="text-subtle-foreground" />
+              Recent Searches
+            </h2>
+            <button
+              type="button"
+              onClick={clearRecentSearches}
+              className="text-xs text-muted-foreground hover:text-danger transition-colors focus-ring rounded-sm"
+            >
+              Clear
+            </button>
           </div>
-          <button
-            type="submit"
-            className="px-4 py-2.5 rounded-xl bg-[var(--brand-primary)] hover:bg-[var(--brand-primary-hover)] text-white text-xs font-semibold transition-colors cursor-pointer shrink-0 shadow-xs"
-          >
-            Search
-          </button>
-        </form>
-      </div>
-
-      {/* Filter Tabs matching Screen 4: All, Titles, Lyrics, Categories */}
-      <div className="flex items-center gap-2 border-b border-[var(--border-subtle)] pb-3">
-        <button
-          type="button"
-          onClick={() => setActiveTab('all')}
-          className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-colors cursor-pointer ${
-            activeTab === 'all'
-              ? 'bg-[var(--brand-primary)] text-white'
-              : 'bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-elevated)] text-[var(--text-secondary)] border border-[var(--border-subtle)]'
-          }`}
-        >
-          All ({allMatches.length})
-        </button>
-
-        <button
-          type="button"
-          onClick={() => setActiveTab('titles')}
-          className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-colors cursor-pointer ${
-            activeTab === 'titles'
-              ? 'bg-[var(--brand-primary)] text-white'
-              : 'bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-elevated)] text-[var(--text-secondary)] border border-[var(--border-subtle)]'
-          }`}
-        >
-          Titles ({titleMatches.length})
-        </button>
-
-        <button
-          type="button"
-          onClick={() => setActiveTab('lyrics')}
-          className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-colors cursor-pointer ${
-            activeTab === 'lyrics'
-              ? 'bg-[var(--brand-primary)] text-white'
-              : 'bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-elevated)] text-[var(--text-secondary)] border border-[var(--border-subtle)]'
-          }`}
-        >
-          Lyrics ({lyricMatches.length})
-        </button>
-
-        <button
-          type="button"
-          onClick={() => setActiveTab('categories')}
-          className={`px-3.5 py-1.5 rounded-xl text-xs font-semibold transition-colors cursor-pointer ${
-            activeTab === 'categories'
-              ? 'bg-[var(--brand-primary)] text-white'
-              : 'bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-elevated)] text-[var(--text-secondary)] border border-[var(--border-subtle)]'
-          }`}
-        >
-          Categories ({categoryMatches.length})
-        </button>
-      </div>
-
-      {/* Results List */}
-      {visibleMatches.length > 0 ? (
-        <div className="bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-2xl divide-y divide-[var(--border-subtle)] overflow-hidden shadow-xs">
-          {visibleMatches.map(({ hymn, matchedSnippet }) => {
-            const favorited = isFavorite(hymn.id);
-            return (
-              <div
-                key={hymn.id}
-                onClick={() => navigate(`/hymns/${hymn.id}`)}
-                className="grid grid-cols-12 gap-3 px-4 sm:px-6 py-4 items-center hover:bg-[var(--bg-surface-elevated)] transition-colors cursor-pointer group"
+          <div className="flex flex-wrap gap-2">
+            {recentSearches.map((q) => (
+              <button
+                key={q}
+                type="button"
+                onClick={() => {
+                  setInputValue(q);
+                  setParams(q, 'all');
+                }}
+                className="inline-flex items-center gap-1.5 h-8 px-3 rounded-full text-xs font-medium border border-border bg-surface text-muted-foreground hover:text-foreground hover:border-border-strong transition-colors focus-ring"
               >
-                {/* Hymn Number */}
-                <div className="col-span-2 sm:col-span-1 text-xs font-bold text-[var(--text-secondary)] text-center group-hover:text-[var(--brand-primary)]">
-                  {hymn.number}
-                </div>
-
-                {/* Title & Snippet */}
-                <div className="col-span-6 sm:col-span-7">
-                  <p className="font-serif font-bold text-sm text-[var(--text-primary)] group-hover:text-[var(--brand-primary)] transition-colors">
-                    {hymn.title}
-                  </p>
-                  <p className="text-xs text-[var(--text-tertiary)] italic truncate mt-0.5">
-                    {matchedSnippet ? `... ${matchedSnippet} ...` : (hymn.alternateTitle || hymn.category)}
-                  </p>
-                </div>
-
-                {/* Category Badge */}
-                <div className="col-span-3">
-                  <span
-                    className={`inline-block px-2.5 py-0.5 rounded-md text-[11px] font-semibold ${getCategoryBadgeClasses(
-                      hymn.category
-                    )}`}
-                  >
-                    {hymn.category.split('&')[0].trim()}
-                  </span>
-                </div>
-
-                {/* Heart Action */}
-                <div className="col-span-1 text-right">
-                  <button
-                    type="button"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      toggleFavorite(hymn.id);
-                    }}
-                    aria-label={favorited ? 'Remove from favorites' : 'Add to favorites'}
-                    className="p-1.5 rounded-lg text-[var(--text-tertiary)] hover:text-red-500 transition-colors cursor-pointer"
-                  >
-                    <Heart
-                      size={16}
-                      className={favorited ? 'fill-red-500 text-red-500' : ''}
-                    />
-                  </button>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      ) : (
-        <EmptyState
-          icon={Search}
-          title="No results found"
-          description={`No hymns matched "${query}" under this tab. Try searching with different terms or selecting the All tab.`}
-          actionLabel="Browse all hymns"
-          actionTo="/hymns"
-        />
+                <History size={12} />
+                {q}
+              </button>
+            ))}
+          </div>
+        </section>
       )}
 
-      {/* Show more results link */}
-      {currentTabMatches.length > displayLimit && (
-        <div className="pt-2 text-center">
-          <button
-            type="button"
-            onClick={() => setDisplayLimit((prev) => prev + 10)}
-            className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[var(--brand-primary)] hover:underline cursor-pointer"
-          >
-            <span>Show more results</span>
-            <ArrowRight size={14} />
-          </button>
-        </div>
+      {/* Filter tabs + result count */}
+      {urlQuery && (
+        <>
+          <div className="flex items-center justify-between gap-3 flex-wrap">
+            <div className="flex items-center gap-2 flex-wrap">
+              {tabBtn('all', 'All', allMatches.length)}
+              {tabBtn('titles', 'Titles', titleMatches.length)}
+              {tabBtn('lyrics', 'Lyrics', lyricMatches.length)}
+              {tabBtn('categories', 'Categories', categoryMatches.length)}
+            </div>
+            <p className="text-xs text-muted-foreground" aria-live="polite">
+              <strong className="text-foreground tabular-nums">{currentTabMatches.length}</strong>{' '}
+              result{currentTabMatches.length === 1 ? '' : 's'} for “{urlQuery}”
+            </p>
+          </div>
+
+          {/* Direct hymn-number hit gets a fast jump affordance */}
+          {numberMatch && activeTab === 'all' && (
+            <Link
+              to={`/hymns/${numberMatch.hymn.id}`}
+              className="flex items-center justify-between gap-3 px-4 py-3 rounded-[12px] bg-primary-soft border border-primary-soft-border group focus-ring"
+            >
+              <span className="text-sm">
+                <span className="font-mono font-bold text-primary">Hymn {numberMatch.hymn.number}</span>
+                <span className="text-foreground font-serif font-semibold"> · {numberMatch.hymn.title}</span>
+              </span>
+              <span className="text-[11px] font-bold uppercase tracking-wider text-primary/70">Open →</span>
+            </Link>
+          )}
+
+          {/* Results */}
+          <HymnList
+            hymns={visibleMatches.map((m) => m.hymn)}
+            matchedSnippetById={snippetById}
+            emptyTitle="No hymns found"
+            emptyDescription={`No hymns match "${urlQuery}" under this filter. Try a different term or the All tab.`}
+          />
+
+          {currentTabMatches.length > displayLimit && (
+            <div className="text-center">
+              <button
+                type="button"
+                onClick={() => setDisplayLimit((prev) => prev + 15)}
+                className="inline-flex items-center h-9 px-4 rounded-[10px] border border-border bg-surface text-sm font-medium text-foreground hover:bg-surface-secondary transition-colors focus-ring"
+              >
+                Show more results
+              </button>
+            </div>
+          )}
+        </>
+      )}
+
+      {/* Empty prompt state when nothing searched yet */}
+      {!urlQuery && recentSearches.length === 0 && (
+        <EmptyState
+          icon={Search}
+          title="Search the hymnal"
+          description="Type a hymn number, a title, or a line of lyrics above. Exact hymn numbers open instantly."
+          actionLabel="Browse all hymns"
+          actionTo="/hymns"
+          compact
+        />
       )}
     </div>
   );

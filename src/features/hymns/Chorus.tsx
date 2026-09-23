@@ -14,27 +14,21 @@ export const Chorus: React.FC<ChorusProps> = ({
   isSerif = true,
 }) => {
   return (
-    <div id="verse-chorus" className="my-7 sm:my-9 pl-6 sm:pl-8 border-l-2 border-[var(--accent-gold)]/70 py-1 scroll-mt-24">
-      <span className="block font-mono text-[11px] sm:text-xs font-bold tracking-widest uppercase text-[var(--accent-gold)] mb-2 select-none">
-        Chorus / Nsinsi
+    <div id="verse-chorus" className="my-8 sm:my-10 pl-5 sm:pl-6 border-l-2 border-accent/50 py-1 scroll-mt-24">
+      <span className="block font-sans text-[11px] font-bold tracking-[0.18em] uppercase text-accent mb-2 select-none">
+        Chorus · Nsinsi
       </span>
-      <div
-        className={`text-[var(--text-primary)] font-medium ${textSizeClass} ${
-          isSerif ? 'font-serif' : 'font-sans'
-        }`}
-      >
+      <div className={`text-foreground ${textSizeClass} ${isSerif ? 'font-serif' : 'font-sans'}`}>
         {lines.map((line, idx) => (
-          <p key={idx} className="hymn-verse-line leading-relaxed sm:leading-loose">
+          <p key={idx} className="hymn-verse-line">
             {line}
           </p>
         ))}
 
         {englishLines && englishLines.length > 0 && (
-          <div className="mt-2.5 pt-2 border-t border-[var(--border-subtle)]/40 text-[var(--text-secondary)] opacity-85 font-serif italic text-sm sm:text-base space-y-1">
+          <div className="mt-3 pt-3 border-t border-border/60 text-muted-foreground font-serif italic text-[0.72em] leading-relaxed space-y-1">
             {englishLines.map((line, idx) => (
-              <p key={idx} className="leading-relaxed">
-                {line}
-              </p>
+              <p key={idx}>{line}</p>
             ))}
           </div>
         )}

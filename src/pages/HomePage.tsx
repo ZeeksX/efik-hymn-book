@@ -1,169 +1,138 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { BookOpen, Heart, Smartphone, Download, Search } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
+import { ArrowRight, Clock, LayoutGrid } from 'lucide-react';
+import { SearchBar } from '../components/SearchBar';
+import { HymnList } from '../components/HymnList';
+import { Button } from '../components/ui';
+import { hymnService } from '../services/hymnService';
+import { useApp } from '../context/AppContext';
+import { CATEGORIES } from '../data/categories';
 
 export const HomePage: React.FC = () => {
   const [query, setQuery] = useState('');
   const navigate = useNavigate();
-  const { openAuthModal } = useAuth();
+  const { openGoToHymn, recentlyViewed } = useApp();
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (query.trim()) {
-      navigate(`/search?q=${encodeURIComponent(query.trim())}`);
-    } else {
-      navigate('/hymns');
-    }
+  const recentHymns = useMemo(
+    () => hymnService.getHymnsByIds(recentlyViewed).slice(0, 4),
+    [recentlyViewed]
+  );
+  const featuredHymns = useMemo(() => hymnService.getFeaturedHymns().slice(0, 4), []);
+
+  const handleSearch = (value: string) => {
+    const trimmed = value.trim();
+    if (!trimmed) return;
+    navigate(`/search?q=${encodeURIComponent(trimmed)}`);
   };
 
   return (
-    <div className="-mx-4 sm:-mx-6 -mt-6">
-      {/* Scenic Serene Hero Banner */}
-      <section className="relative overflow-hidden pt-12 pb-16 sm:pt-16 sm:pb-24 px-4 sm:px-6 bg-gradient-to-b from-[#EFE8DC]/80 via-[#F7F3EB] to-[var(--bg-main)] dark:from-[#18231C] dark:via-[#141C16] dark:to-[var(--bg-main)] transition-colors">
-        {/* Decorative calm mist & palm silhouettes */}
-        <div className="absolute inset-0 pointer-events-none opacity-20 dark:opacity-15 flex justify-between items-end overflow-hidden">
-          <svg className="w-48 sm:w-72 h-auto text-[var(--brand-primary)] -mb-4 -ml-6" viewBox="0 0 200 200" fill="currentColor">
-            {/* Elegant palm & foliage silhouette representing Cross River landscape */}
-            <path d="M20 200 C30 140 60 90 120 70 C90 90 70 120 60 200 Z" opacity="0.6"/>
-            <path d="M120 70 C150 40 190 30 200 40 C170 60 140 70 120 70 Z" />
-            <path d="M120 70 C140 90 170 110 190 120 C160 110 130 90 120 70 Z" />
-            <path d="M120 70 C100 50 80 20 70 10 C80 30 100 60 120 70 Z" />
-            <path d="M10 200 Q 80 160 140 120 Q 90 150 20 200 Z" opacity="0.4"/>
-          </svg>
-          <svg className="w-56 sm:w-80 h-auto text-[var(--brand-primary)] -mb-4 -mr-8 hidden sm:block" viewBox="0 0 200 200" fill="currentColor">
-            <path d="M180 200 C170 140 140 90 80 70 C110 90 130 120 140 200 Z" opacity="0.6"/>
-            <path d="M80 70 C50 40 10 30 0 40 C30 60 60 70 80 70 Z" />
-            <path d="M80 70 C60 90 30 110 10 120 C40 110 70 90 80 70 Z" />
-            <path d="M80 70 C100 50 120 20 130 10 C120 30 100 60 80 70 Z" />
-          </svg>
+    <div className="max-w-6xl mx-auto space-y-10 sm:space-y-12">
+      {/* Compact editorial hero */}
+      <section className="pt-2 sm:pt-6 max-w-3xl mx-auto text-center">
+        <p className="text-[11px] sm:text-xs font-semibold tracking-[0.22em] uppercase text-muted-foreground mb-3">
+          Ñwed Ikwọ Efik
+        </p>
+        <h1 className="text-display text-foreground">Efik Hymn Book</h1>
+        <p className="mt-2.5 text-base sm:text-lg text-muted-foreground">
+          Hymns for worship, wherever you are.
+        </p>
+
+        {/* Prominent search */}
+        <div className="mt-6 max-w-2xl mx-auto">
+          <SearchBar
+            size="large"
+            value={query}
+            onSearchChange={setQuery}
+            onSubmit={handleSearch}
+            showGoToShortcut={false}
+          />
         </div>
 
-        {/* Content Container */}
-        <div className="relative max-w-3xl mx-auto text-center">
-          {/* Spaced Uppercase Eyebrow */}
-          <p className="text-xs sm:text-sm font-semibold tracking-[0.25em] uppercase text-[var(--text-secondary)] opacity-85 mb-3 sm:mb-4">
-            PRAISE • WORSHIP • OUR HERITAGE
-          </p>
-
-          {/* Main Headline */}
-          <h1 className="font-serif text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-[var(--text-primary)]">
-            Efik Hymn Book
-          </h1>
-
-          {/* Tagline */}
-          <p className="mt-3 text-lg sm:text-xl font-medium text-[var(--text-primary)] opacity-90">
-            Timeless hymns. Lasting faith. Always with you.
-          </p>
-
-          {/* Subtitle Description */}
-          <p className="mt-2 text-xs sm:text-sm md:text-base text-[var(--text-secondary)] max-w-xl mx-auto leading-relaxed">
-            Explore a rich collection of Efik hymns, search by number, title or lyrics, save your favourites, and stay connected to our heritage.
-          </p>
-
-          {/* Floating Search Input Card with dark green Search button */}
-          <div className="mt-8 max-w-2xl mx-auto">
-            <form
-              onSubmit={handleSearch}
-              className="flex items-center bg-[var(--bg-surface)] border border-[var(--border-subtle)] rounded-2xl p-1.5 sm:p-2 shadow-lg focus-within:ring-2 focus-within:ring-[var(--brand-primary)]/20 transition-all"
-            >
-              <div className="pl-3 sm:pl-4 text-[var(--text-tertiary)] shrink-0">
-                <Search size={20} />
-              </div>
-              <input
-                type="text"
-                placeholder="Search by hymn number, title or lyrics..."
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                className="w-full px-3 py-2 text-xs sm:text-sm md:text-base bg-transparent border-none text-[var(--text-primary)] placeholder:text-[var(--text-tertiary)] focus:outline-hidden"
-              />
-              <button
-                type="submit"
-                className="px-5 sm:px-7 py-2.5 sm:py-3 rounded-xl bg-[var(--brand-primary)] hover:bg-[var(--brand-primary-hover)] text-white text-xs sm:text-sm font-semibold transition-colors cursor-pointer shrink-0 shadow-xs"
-              >
-                Search
-              </button>
-            </form>
-          </div>
-
-          {/* 4 Feature Benefit Highlights Grid */}
-          <div className="mt-12 sm:mt-16 grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6 text-center">
-            {/* 1. Browse Hymns */}
-            <Link
-              to="/hymns"
-              className="group p-4 sm:p-5 rounded-2xl bg-[var(--bg-surface)]/70 hover:bg-[var(--bg-surface)] border border-[var(--border-subtle)]/80 hover:border-[var(--brand-primary)]/30 shadow-xs hover:shadow-md transition-all flex flex-col items-center"
-            >
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-[var(--brand-primary)] mb-2.5 transition-transform group-hover:scale-105">
-                <BookOpen size={24} />
-              </div>
-              <h3 className="font-serif font-bold text-sm text-[var(--text-primary)]">
-                Browse Hymns
-              </h3>
-              <p className="mt-1 text-[11px] sm:text-xs text-[var(--text-secondary)]">
-                Access the complete hymn collection
-              </p>
-            </Link>
-
-            {/* 2. Save Favourites */}
-            <Link
-              to="/favorites"
-              className="group p-4 sm:p-5 rounded-2xl bg-[var(--bg-surface)]/70 hover:bg-[var(--bg-surface)] border border-[var(--border-subtle)]/80 hover:border-[var(--brand-primary)]/30 shadow-xs hover:shadow-md transition-all flex flex-col items-center"
-            >
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-[var(--brand-primary)] mb-2.5 transition-transform group-hover:scale-105">
-                <Heart size={24} />
-              </div>
-              <h3 className="font-serif font-bold text-sm text-[var(--text-primary)]">
-                Save Favourites
-              </h3>
-              <p className="mt-1 text-[11px] sm:text-xs text-[var(--text-secondary)]">
-                Keep your favourite hymns close
-              </p>
-            </Link>
-
-            {/* 3. Sync Across Devices */}
-            <button
-              type="button"
-              onClick={openAuthModal}
-              className="group p-4 sm:p-5 rounded-2xl bg-[var(--bg-surface)]/70 hover:bg-[var(--bg-surface)] border border-[var(--border-subtle)]/80 hover:border-[var(--brand-primary)]/30 shadow-xs hover:shadow-md transition-all flex flex-col items-center cursor-pointer text-center"
-            >
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-[var(--brand-primary)] mb-2.5 transition-transform group-hover:scale-105">
-                <Smartphone size={24} />
-              </div>
-              <h3 className="font-serif font-bold text-sm text-[var(--text-primary)]">
-                Sync Across Devices
-              </h3>
-              <p className="mt-1 text-[11px] sm:text-xs text-[var(--text-secondary)]">
-                Your hymns, anywhere you go
-              </p>
-            </button>
-
-            {/* 4. Offline Access */}
-            <Link
-              to="/about"
-              className="group p-4 sm:p-5 rounded-2xl bg-[var(--bg-surface)]/70 hover:bg-[var(--bg-surface)] border border-[var(--border-subtle)]/80 hover:border-[var(--brand-primary)]/30 shadow-xs hover:shadow-md transition-all flex flex-col items-center"
-            >
-              <div className="w-10 h-10 rounded-xl flex items-center justify-center text-[var(--brand-primary)] mb-2.5 transition-transform group-hover:scale-105">
-                <Download size={24} />
-              </div>
-              <h3 className="font-serif font-bold text-sm text-[var(--text-primary)]">
-                Offline Access
-              </h3>
-              <p className="mt-1 text-[11px] sm:text-xs text-[var(--text-secondary)]">
-                Available on any device even offline
-              </p>
-            </Link>
-          </div>
-
-          {/* Concluding Scripture Quotation */}
-          <div className="mt-12 sm:mt-16 pt-6 border-t border-[var(--border-subtle)]/60">
-            <blockquote className="font-serif italic text-base sm:text-lg text-[var(--text-primary)] opacity-80">
-              "Let everything that has breath praise the Lord."
-            </blockquote>
-            <cite className="block not-italic text-xs font-semibold text-[var(--text-secondary)] mt-1 tracking-wider uppercase">
-              Psalm 150:6
-            </cite>
-          </div>
+        {/* Primary actions */}
+        <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
+          <Button
+            size="lg"
+            onClick={() => navigate('/hymns')}
+            className="min-w-[150px]"
+          >
+            Browse Hymns
+          </Button>
+          <Button
+            variant="secondary"
+            size="lg"
+            onClick={openGoToHymn}
+            className="min-w-[150px]"
+          >
+            Go to Hymn
+          </Button>
         </div>
+      </section>
+
+      {/* Recently Viewed */}
+      {recentHymns.length > 0 && (
+        <section aria-labelledby="recent-heading">
+          <div className="flex items-center justify-between mb-3">
+            <h2 id="recent-heading" className="flex items-center gap-2 text-sm font-semibold text-foreground">
+              <Clock size={15} className="text-subtle-foreground" />
+              Recently Viewed
+            </h2>
+            <Link
+              to="/history"
+              className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline focus-ring rounded-sm"
+            >
+              View all <ArrowRight size={13} />
+            </Link>
+          </div>
+          <HymnList hymns={recentHymns} />
+        </section>
+      )}
+
+      {/* Browse by Category */}
+      <section aria-labelledby="categories-heading">
+        <div className="flex items-center justify-between mb-3">
+          <h2 id="categories-heading" className="flex items-center gap-2 text-sm font-semibold text-foreground">
+            <LayoutGrid size={15} className="text-subtle-foreground" />
+            Browse by Category
+          </h2>
+          <Link
+            to="/categories"
+            className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline focus-ring rounded-sm"
+          >
+            All categories <ArrowRight size={13} />
+          </Link>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+          {CATEGORIES.slice(0, 8).map((cat) => (
+            <Link
+              key={cat.id}
+              to={`/categories/${cat.slug}`}
+              className="group flex items-center justify-between gap-2 px-4 py-3.5 rounded-[12px] border border-border bg-surface hover:border-primary-soft-border hover:bg-surface-secondary transition-colors focus-ring"
+            >
+              <span className="font-serif font-semibold text-sm text-foreground group-hover:text-primary transition-colors truncate">
+                {cat.name}
+              </span>
+              <span className="text-[11px] font-semibold text-subtle-foreground shrink-0 tabular-nums">
+                {cat.hymnCount}
+              </span>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* Featured hymns */}
+      <section aria-labelledby="featured-heading" className="pb-4">
+        <div className="flex items-center justify-between mb-3">
+          <h2 id="featured-heading" className="text-sm font-semibold text-foreground">
+            Well-loved Hymns
+          </h2>
+          <Link
+            to="/hymns"
+            className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline focus-ring rounded-sm"
+          >
+            Browse all <ArrowRight size={13} />
+          </Link>
+        </div>
+        <HymnList hymns={featuredHymns} />
       </section>
     </div>
   );

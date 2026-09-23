@@ -10,6 +10,7 @@ const DEFAULT_SETTINGS: ReaderSettings = {
   textSize: 'md',
   keepScreenAwake: false,
   serifLyrics: false,
+  showVerseNumbers: true,
 };
 
 export const storageService = {

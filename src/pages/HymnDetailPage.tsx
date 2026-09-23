@@ -40,10 +40,10 @@ export const HymnDetailPage: React.FC = () => {
   useEffect(() => {
     if (hymn) {
       addRecentlyViewed(hymn.id);
-      document.title = `Hymn ${hymn.number}: ${hymn.title} | Efik Hymn Book`;
+      document.title = `Hymn ${hymn.number}: ${hymn.title} | Rehoboth Assembly Hymn Book`;
     }
     return () => {
-      document.title = 'Efik Hymn Book';
+      document.title = 'Rehoboth Assembly Hymn Book';
     };
   }, [hymn, addRecentlyViewed]);
 
@@ -58,7 +58,7 @@ export const HymnDetailPage: React.FC = () => {
     if (!hymn) return;
     const shareData = {
       title: `Hymn ${hymn.number}: ${hymn.title}`,
-      text: `Read Hymn ${hymn.number} (${hymn.title}) on the Efik Hymn Book:`,
+      text: `Read Hymn ${hymn.number} (${hymn.title}) on the Rehoboth Assembly Hymn Book:`,
       url: window.location.href,
     };
     if (navigator.share) {
@@ -80,7 +80,7 @@ export const HymnDetailPage: React.FC = () => {
       '',
       ...hymn.verses.flatMap((v) => [`Verse ${v.number}:`, ...v.lines, '']),
       hymn.chorus ? ['Chorus:', ...hymn.chorus, ''] : [],
-      'From Efik Hymn Book',
+      'From the Rehoboth Assembly Hymn Book',
     ]
       .filter(Boolean)
       .join('\n');

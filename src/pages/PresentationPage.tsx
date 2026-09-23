@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Maximize2, Minimize2, X, ChevronLeft, ChevronRight, BookOpen } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext';
 import { hymnService } from '../services/hymnService';
 import { formatHymnNumber } from '../utils/formatters';
 
@@ -14,7 +13,6 @@ interface SlideItem {
 export const PresentationPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
-  const { isDark } = useTheme();
 
   const hymn = useMemo(() => {
     if (!id) return undefined;
@@ -105,9 +103,9 @@ export const PresentationPage: React.FC = () => {
 
   if (!hymn) {
     return (
-      <div className={`min-h-screen flex items-center justify-center p-6 ${isDark ? 'bg-[#0d1511] text-[#ede9dd]' : 'bg-[#f8f6f0] text-[#1f1c18]'}`}>
+      <div className="min-h-screen flex items-center justify-center p-6 bg-[image:var(--gradient-brand)] text-white">
         <div className="text-center space-y-4">
-          <BookOpen size={40} className="mx-auto text-accent" />
+          <BookOpen size={40} className="mx-auto text-gold" />
           <h1 className="text-2xl font-serif">Hymn Not Found</h1>
           <Link
             to="/hymns"
@@ -122,13 +120,11 @@ export const PresentationPage: React.FC = () => {
 
   const currentSlide = slides[currentSlideIndex] || slides[0];
 
+  // Projection surfaces: deep navy canvas in dark presentation mode,
+  // warm white in light presentation mode. The lyric text is everything.
   return (
     <div
-      className={`fixed inset-0 z-[80] flex flex-col justify-between select-none ${
-        isDark
-          ? 'bg-[#0d1511] text-[#ede9dd]'
-          : 'bg-[#f8f6f0] text-[#1f1c18]'
-      }`}
+      className={`fixed inset-0 z-[80] flex flex-col justify-between select-none bg-[image:var(--gradient-brand)] text-white`}
       onMouseMove={armHideTimer}
       onTouchStart={armHideTimer}
     >
@@ -139,7 +135,7 @@ export const PresentationPage: React.FC = () => {
         }`}
       >
         <div className="flex items-center gap-3 min-w-0">
-          <span className="font-mono font-bold text-accent text-sm sm:text-base shrink-0">
+          <span className="font-mono font-bold text-gold text-sm sm:text-base shrink-0">
             HYMN {formatHymnNumber(hymn.number)}
           </span>
           <span className="hidden sm:inline font-serif truncate max-w-xs md:max-w-md opacity-70">
@@ -156,7 +152,7 @@ export const PresentationPage: React.FC = () => {
             onClick={toggleFullscreen}
             title={isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}
             aria-label="Toggle fullscreen"
-            className="p-2 rounded-lg bg-black/10 hover:bg-black/20 dark:bg-white/10 dark:hover:bg-white/20 transition-colors focus-ring"
+            className="p-2 rounded-lg bg-white/10 hover:bg-white/20 transition-colors focus-ring"
           >
             {isFullscreen ? <Minimize2 size={17} /> : <Maximize2 size={17} />}
           </button>
@@ -164,7 +160,7 @@ export const PresentationPage: React.FC = () => {
             to={`/hymns/${hymn.id}`}
             title="Exit Presentation"
             aria-label="Exit Presentation"
-            className="p-2 rounded-lg bg-black/10 hover:bg-black/20 dark:bg-white/10 dark:hover:bg-white/20 transition-colors focus-ring"
+            className="p-2 rounded-lg bg-white/10 hover:bg-white/20 transition-colors focus-ring"
           >
             <X size={17} />
           </Link>
@@ -175,7 +171,7 @@ export const PresentationPage: React.FC = () => {
       <main className="flex-1 flex flex-col items-center justify-center text-center max-w-5xl mx-auto w-full px-6 sm:px-8 py-6">
         {currentSlide.type === 'title' ? (
           <div className="space-y-4 animate-dialog-in">
-            <span className="inline-block px-3 py-1 rounded-md text-xs sm:text-sm font-mono tracking-widest text-accent uppercase bg-black/10 dark:bg-white/10">
+            <span className="inline-block px-3 py-1 rounded-md text-xs sm:text-sm font-mono tracking-widest text-gold uppercase bg-white/10">
               {currentSlide.label}
             </span>
             <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight leading-tight">
@@ -184,7 +180,7 @@ export const PresentationPage: React.FC = () => {
             {currentSlide.lines[1] && (
               <p className="font-serif italic text-lg sm:text-2xl opacity-70">{currentSlide.lines[1]}</p>
             )}
-            <p className="text-xs sm:text-sm uppercase tracking-[0.2em] text-accent pt-3 font-semibold">
+            <p className="text-xs sm:text-sm uppercase tracking-[0.2em] text-gold pt-3 font-semibold">
               {currentSlide.lines[2]}
             </p>
           </div>
@@ -193,7 +189,7 @@ export const PresentationPage: React.FC = () => {
             <span
               className={`inline-block font-mono text-xs sm:text-sm font-bold tracking-[0.18em] uppercase px-3 py-1 rounded-md ${
                 currentSlide.type === 'chorus'
-                  ? 'text-accent bg-black/10 dark:bg-white/10'
+                  ? 'text-gold bg-white/10'
                   : 'opacity-60'
               }`}
             >
@@ -221,7 +217,7 @@ export const PresentationPage: React.FC = () => {
           type="button"
           disabled={currentSlideIndex === 0}
           onClick={() => setCurrentSlideIndex((prev) => Math.max(prev - 1, 0))}
-          className="inline-flex items-center gap-1.5 h-10 px-4 rounded-[10px] bg-black/10 hover:bg-black/20 dark:bg-white/10 dark:hover:bg-white/20 disabled:opacity-30 disabled:pointer-events-none text-xs sm:text-sm font-semibold transition-colors focus-ring"
+          className="inline-flex items-center gap-1.5 h-10 px-4 rounded-[10px] bg-white/10 hover:bg-white/20 disabled:opacity-30 disabled:pointer-events-none text-xs sm:text-sm font-semibold transition-colors focus-ring"
         >
           <ChevronLeft size={17} />
           <span>Previous</span>
@@ -239,8 +235,8 @@ export const PresentationPage: React.FC = () => {
               aria-current={idx === currentSlideIndex}
               className={`h-2 rounded-full transition-all focus-ring ${
                 idx === currentSlideIndex
-                  ? 'w-6 bg-accent'
-                  : 'w-2 bg-black/20 dark:bg-white/20 hover:bg-black/40 dark:hover:bg-white/40'
+                  ? 'w-6 bg-gold'
+                  : 'w-2 bg-white/25 hover:bg-white/50'
               }`}
             />
           ))}
@@ -251,7 +247,7 @@ export const PresentationPage: React.FC = () => {
             type="button"
             onClick={() => setCurrentSlideIndex((prev) => Math.min(prev + 1, slides.length - 1))}
             disabled={currentSlideIndex === slides.length - 1}
-            className="inline-flex items-center gap-1.5 h-10 px-4 rounded-[10px] bg-black/10 hover:bg-black/20 dark:bg-white/10 dark:hover:bg-white/20 disabled:opacity-30 disabled:pointer-events-none text-xs sm:text-sm font-semibold transition-colors focus-ring"
+            className="inline-flex items-center gap-1.5 h-10 px-4 rounded-[10px] bg-white/10 hover:bg-white/20 disabled:opacity-30 disabled:pointer-events-none text-xs sm:text-sm font-semibold transition-colors focus-ring"
           >
             <span>Next</span>
             <ChevronRight size={17} />

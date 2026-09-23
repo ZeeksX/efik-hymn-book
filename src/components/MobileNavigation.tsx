@@ -25,21 +25,21 @@ export const MobileNavigation: React.FC = () => {
         </NavLink>
 
         <NavLink to="/hymns" className={navItemClass} aria-label="Hymns">
-          <BookOpen size={20} />
+          <BookOpen size={20} strokeWidth={1.75} />
           <span>Hymns</span>
         </NavLink>
 
         <NavLink to="/search" className={navItemClass} aria-label="Search">
-          <Search size={20} />
+          <Search size={20} strokeWidth={1.75} />
           <span>Search</span>
         </NavLink>
 
         <NavLink to="/favorites" className={navItemClass} aria-label="Favourites">
           <span className="relative">
-            <Heart size={20} />
+            <Heart size={20} strokeWidth={1.75} />
             {favorites.length > 0 && (
               <span
-                className="absolute -top-1.5 -right-2 min-w-[15px] h-[15px] px-0.5 rounded-full bg-accent text-white text-[9px] font-bold flex items-center justify-center"
+                className="absolute -top-1.5 -right-2 min-w-[15px] h-[15px] px-0.5 rounded-full bg-gold text-on-gold text-[9px] font-bold flex items-center justify-center"
                 aria-hidden
               >
                 {favorites.length > 9 ? '9+' : favorites.length}

@@ -4,7 +4,7 @@ import { Select, Button, useToast } from '../../components/ui';
 
 export const AdminSettingsPage: React.FC = () => {
   const { toast } = useToast();
-  const [appName, setAppName] = useState('Efik Hymn Book');
+  const [appName, setAppName] = useState('Rehoboth Assembly Hymn Book');
   const [language, setLanguage] = useState('en');
   const [sorting, setSorting] = useState('num-asc');
 

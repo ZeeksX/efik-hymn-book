@@ -1,100 +1,114 @@
 @import "tailwindcss";
 
 /* ============================================================
-   EFIK HYMN BOOK — SEMANTIC DESIGN TOKENS
+   REHOBOTH ASSEMBLY — HYMN BOOK
+   Brand tokens: Royal Blue + Deep Navy + Rehoboth Gold + White
+   60% Blue · 25% White · 15% Gold
    Single source of truth for light & dark themes.
-   Components consume ONLY these tokens.
    ============================================================ */
 
 @theme inline {
-  /* Typography */
-  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-serif: "Lora", Georgia, Cambria, "Times New Roman", Times, serif;
+  /* Typography — Montserrat headings, Poppins body */
+  --font-sans: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  /* Tailwind's `font-serif` utility is mapped to the brand heading face */
+  --font-serif: "Montserrat", "Poppins", -apple-system, BlinkMacSystemFont, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 @layer base {
   :root {
     /* Surfaces */
-    --background: #f8f6f0;          /* warm ivory / parchment */
-    --surface: #ffffff;
-    --surface-secondary: #f2f0e9;
+    --background: #f4f6f8;          /* Soft Gray — page background */
+    --surface: #ffffff;             /* White — cards, sheets */
+    --surface-secondary: #ecf0f5;   /* Soft gray-blue for wells/hover */
     --surface-elevated: #ffffff;
 
     /* Text */
-    --foreground: #1f1c18;          /* deep warm charcoal */
-    --muted-foreground: #6d675e;    /* warm gray */
-    --subtle-foreground: #948d81;
+    --foreground: #0a1f3d;          /* near Deep Navy for comfortable reading */
+    --muted-foreground: #46586f;
+    --subtle-foreground: #7b8ba1;
 
     /* Borders */
-    --border: #e5dfd2;
-    --border-strong: #cfc7b6;
+    --border: #dde3eb;
+    --border-strong: #c2ccd9;
 
-    /* Brand — deep Efik green */
-    --primary: #0f5132;
-    --primary-hover: #0b4128;
+    /* Brand — Rehoboth Royal Blue */
+    --primary: #0b3d91;
+    --primary-hover: #093378;
     --primary-foreground: #ffffff;
-    --primary-soft: #e9f1ea;        /* tinted fill for selected states */
-    --primary-soft-border: #c3d9c9;
+    --primary-soft: #e8eef9;        /* tinted fill for selected states */
+    --primary-soft-border: #c4d3ee;
 
-    /* Accent — restrained heritage gold */
-    --accent: #a07b23;
-    --accent-muted: #f5efdd;
+    /* Rehoboth Gold — CTA surface (navy text on gold, per brand guide) */
+    --gold: #d4af37;
+    --gold-strong: #be9427;
+    --on-gold: #062b63;
+
+    /* Accent — gold tone tuned for text on light surfaces */
+    --accent: #8a6a17;
+    --accent-muted: #f6efdb;
 
     /* Feedback */
-    --success: #227a4b;
-    --success-soft: #e6f2ea;
-    --warning: #a16207;
-    --warning-soft: #f9f1dc;
-    --danger: #b03a2e;
-    --danger-soft: #f9e9e6;
+    --success: #1f7a46;
+    --success-soft: #e2f2e8;
+    --warning: #94610b;
+    --warning-soft: #f9efd8;
+    --danger: #b3362a;
+    --danger-soft: #f9e7e4;
 
     /* Inputs & focus */
     --input-bg: #ffffff;
-    --focus-ring: #0f5132;
+    --focus-ring: #0b3d91;
 
-    /* Shadows — soft, neutral */
-    --shadow-color: 220 40% 20%;
+    /* Gradients */
+    --gradient-brand: linear-gradient(135deg, #0b3d91 0%, #062b63 100%);
   }
 
   [data-theme="dark"] {
-    /* Surfaces */
-    --background: #101713;
-    --surface: #17201b;
-    --surface-secondary: #1d2821;
-    --surface-elevated: #243029;
+    /* Surfaces — deep navy family, never pure black */
+    --background: #061224;
+    --surface: #0a1b33;
+    --surface-secondary: #102743;
+    --surface-elevated: #16305a;
 
     /* Text */
-    --foreground: #ede9dd;
-    --muted-foreground: #a8a294;
-    --subtle-foreground: #7d776b;
+    --foreground: #eaf0f9;
+    --muted-foreground: #a9b8ce;
+    --subtle-foreground: #7c8da6;
 
     /* Borders */
-    --border: #2a352d;
-    --border-strong: #3d4a40;
+    --border: #1d3357;
+    --border-strong: #2e4a75;
 
-    /* Brand — brighter accessible heritage green */
-    --primary: #3d8b63;
-    --primary-hover: #4c9f74;
-    --primary-foreground: #0c130e;
-    --primary-soft: #1d2f24;
-    --primary-soft-border: #2f4a39;
+    /* Brand — brighter royal blue for dark surfaces */
+    --primary: #2c55a8;
+    --primary-hover: #3b6ac2;
+    --primary-foreground: #ffffff;
+    --primary-soft: #12274a;
+    --primary-soft-border: #24437a;
+
+    /* Gold brightens slightly on dark for glow-free legibility */
+    --gold: #e2c15c;
+    --gold-strong: #efd384;
+    --on-gold: #062b63;
 
     /* Accent */
-    --accent: #d3ac54;
-    --accent-muted: #2b2416;
+    --accent: #e2c15c;
+    --accent-muted: #26200f;
 
     /* Feedback */
-    --success: #58b380;
-    --success-soft: #1c2b21;
-    --warning: #d9a441;
-    --warning-soft: #2b2416;
-    --danger: #e07856;
-    --danger-soft: #33201b;
+    --success: #5cb98a;
+    --success-soft: #10281c;
+    --warning: #e2b84c;
+    --warning-soft: #2a2010;
+    --danger: #e87b6e;
+    --danger-soft: #321a16;
 
     /* Inputs & focus */
-    --input-bg: #131a16;
-    --focus-ring: #5cab82;
+    --input-bg: #081527;
+    --focus-ring: #5b8ad9;
+
+    --gradient-brand: linear-gradient(135deg, #0b3d91 0%, #050f22 100%);
   }
 
   * {
@@ -152,6 +166,9 @@
   --color-primary-foreground: var(--primary-foreground);
   --color-primary-soft: var(--primary-soft);
   --color-primary-soft-border: var(--primary-soft-border);
+  --color-gold: var(--gold);
+  --color-gold-strong: var(--gold-strong);
+  --color-on-gold: var(--on-gold);
   --color-accent: var(--accent);
   --color-accent-muted: var(--accent-muted);
   --color-success: var(--success);
@@ -166,33 +183,34 @@
 
 /* ---------- Typography utilities ---------- */
 .font-serif {
-  font-family: var(--font-serif);
+  font-family: var(--font-serif); /* Montserrat — brand heading face */
 }
 
 .text-display {
   font-family: var(--font-serif);
   font-size: clamp(2.25rem, 4vw, 3.25rem);
-  line-height: 1.1;
-  letter-spacing: -0.02em;
-  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.01em;
+  font-weight: 800;
 }
 
 .text-h1 {
   font-family: var(--font-serif);
   font-size: clamp(1.75rem, 3vw, 2.25rem);
-  line-height: 1.2;
-  letter-spacing: -0.015em;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
   font-weight: 700;
 }
 
 .text-h2 {
   font-family: var(--font-serif);
   font-size: clamp(1.375rem, 2vw, 1.75rem);
-  line-height: 1.3;
+  line-height: 1.25;
   font-weight: 700;
 }
 
 .text-h3 {
+  font-family: var(--font-serif);
   font-size: 1.125rem;
   line-height: 1.4;
   font-weight: 600;

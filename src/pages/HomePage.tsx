@@ -3,7 +3,6 @@ import { useNavigate, Link } from 'react-router-dom';
 import { ArrowRight, Clock, LayoutGrid } from 'lucide-react';
 import { SearchBar } from '../components/SearchBar';
 import { HymnList } from '../components/HymnList';
-import { Button } from '../components/ui';
 import { hymnService } from '../services/hymnService';
 import { useApp } from '../context/AppContext';
 import { CATEGORIES } from '../data/categories';
@@ -27,44 +26,68 @@ export const HomePage: React.FC = () => {
 
   return (
     <div className="max-w-6xl mx-auto space-y-10 sm:space-y-12">
-      {/* Compact editorial hero */}
-      <section className="pt-2 sm:pt-6 max-w-3xl mx-auto text-center">
-        <p className="text-[11px] sm:text-xs font-semibold tracking-[0.22em] uppercase text-muted-foreground mb-3">
-          Ñwed Ikwọ Efik
-        </p>
-        <h1 className="text-display text-foreground">Efik Hymn Book</h1>
-        <p className="mt-2.5 text-base sm:text-lg text-muted-foreground">
-          Hymns for worship, wherever you are.
-        </p>
+      {/* Brand hero — deep blue gradient, white text, gold accents */}
+      <section
+        className="relative overflow-hidden -mx-4 sm:-mx-6 px-4 sm:px-6 pt-12 pb-14 sm:pt-16 sm:pb-16 text-center bg-[image:var(--gradient-brand)]"
+        aria-labelledby="hero-heading"
+      >
+        {/* Subtle gold rule accents — decorative only */}
+        <span
+          aria-hidden
+          className="pointer-events-none absolute left-1/2 -translate-x-1/2 top-6 w-24 h-[3px] rounded-full bg-gold/70"
+        />
+        <span
+          aria-hidden
+          className="pointer-events-none absolute -right-16 -top-16 w-64 h-64 rounded-full bg-white/[0.04]"
+        />
+        <span
+          aria-hidden
+          className="pointer-events-none absolute -left-20 bottom-0 w-72 h-72 rounded-full bg-gold/[0.06]"
+        />
 
-        {/* Prominent search */}
-        <div className="mt-6 max-w-2xl mx-auto">
-          <SearchBar
-            size="large"
-            value={query}
-            onSearchChange={setQuery}
-            onSubmit={handleSearch}
-            showGoToShortcut={false}
-          />
-        </div>
+        <div className="relative max-w-3xl mx-auto">
+          {/* Organization line */}
+          <p className="text-[11px] sm:text-xs font-semibold tracking-[0.18em] uppercase text-white/70 mb-4">
+            The Apostolic Church Nigeria · Great-Ilasa District
+          </p>
 
-        {/* Primary actions */}
-        <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
-          <Button
-            size="lg"
-            onClick={() => navigate('/hymns')}
-            className="min-w-[150px]"
-          >
-            Browse Hymns
-          </Button>
-          <Button
-            variant="secondary"
-            size="lg"
-            onClick={openGoToHymn}
-            className="min-w-[150px]"
-          >
-            Go to Hymn
-          </Button>
+          <h1 id="hero-heading" className="text-display text-white">
+            Rehoboth <span className="text-gold">Assembly</span>
+          </h1>
+
+          <p className="mt-3 text-base sm:text-lg text-white/85">
+            Hymns for worship, wherever you are.
+          </p>
+          <p className="mt-1 text-sm text-white/60">Ñwed Ikwọ Efik — the Efik hymn collection</p>
+
+          {/* Prominent search on dark surface */}
+          <div className="mt-7 max-w-2xl mx-auto [&_input]:bg-white [&_input]:border-transparent [&_input]:text-[#0a1f3d] [&_input]:placeholder:text-[#7b8ba1]">
+            <SearchBar
+              size="large"
+              value={query}
+              onSearchChange={setQuery}
+              onSubmit={handleSearch}
+              showGoToShortcut={false}
+            />
+          </div>
+
+          {/* Primary actions — gold CTA + white outline secondary */}
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
+            <button
+              type="button"
+              onClick={() => navigate('/hymns')}
+              className="inline-flex items-center justify-center h-11 px-6 rounded-[10px] bg-gold text-on-gold hover:bg-gold-strong text-sm font-semibold transition-colors focus-ring shadow-xs"
+            >
+              Browse Hymns
+            </button>
+            <button
+              type="button"
+              onClick={openGoToHymn}
+              className="inline-flex items-center justify-center h-11 px-6 rounded-[10px] border border-white/45 text-white hover:bg-white/10 text-sm font-semibold transition-colors focus-ring"
+            >
+              Go to Hymn
+            </button>
+          </div>
         </div>
       </section>
 

@@ -29,10 +29,10 @@ export const AboutPage: React.FC = () => {
     <div className="max-w-3xl mx-auto space-y-10">
       {/* Header */}
       <header>
-        <h1 className="text-h1 text-foreground">About the Efik Hymn Book</h1>
+        <h1 className="text-h1 text-foreground">About This Hymn Book</h1>
         <p className="mt-2 text-base text-muted-foreground leading-relaxed">
-          Digitising the beloved hymns of the Efik-speaking congregations of Nigeria and the
-          diaspora.
+          The Rehoboth Assembly digital edition of the beloved hymns of the Efik-speaking
+          congregations of Nigeria and the diaspora.
         </p>
       </header>
 
@@ -42,8 +42,9 @@ export const AboutPage: React.FC = () => {
         <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
           The <em className="text-foreground">Ñwed Ikwọ Efik</em> has served generations of
           believers in churches, homes, and choir practices across Calabar, Akwa Ibom, Cross River,
-          and beyond. This digital edition was crafted so these hymns remain instantly accessible on
-          any phone, tablet, or desktop — even without connectivity once cached.
+          and beyond. This digital edition — prepared for Rehoboth Assembly, Great-Ilasa District —
+          keeps these hymns instantly accessible on any phone, tablet, or desktop, even without
+          connectivity once cached.
         </p>
         <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
           Every screen is designed with reverence, legibility, and simplicity, so that young
@@ -92,7 +93,7 @@ export const AboutPage: React.FC = () => {
       <section className="space-y-3">
         <h2 className="text-h2 text-foreground">Acknowledgements & Sources</h2>
         <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-          The Efik Hymn Book is drawn from the hymnal tradition of the Presbyterian Church of
+          The hymn texts are drawn from the hymnal tradition of the Presbyterian Church of
           Nigeria, the Qua Iboe Church, the Methodist Church, and other Protestant assemblies along
           the Cross River basin. We honour the translators, indigenous linguists, choir directors,
           and ministers who preserved this spiritual heritage.

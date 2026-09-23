@@ -12,6 +12,7 @@ try {
     theme === 'dark' ||
     (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)
   document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light')
+  // meta theme-color is updated by ThemeContext; static default lives in index.html
   document.documentElement.style.colorScheme = dark ? 'dark' : 'light'
 } catch {
   document.documentElement.setAttribute('data-theme', 'light')

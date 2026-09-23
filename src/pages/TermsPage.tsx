@@ -24,7 +24,7 @@ export const TermsPage: React.FC = () => {
         </div>
         <h1 className="text-h1 text-foreground">Terms &amp; Conditions</h1>
         <p className="mt-2 text-sm text-muted-foreground">
-          Last updated: September 2026. Guidelines for using the Efik Hymn Book application.
+          Last updated: September 2026. Guidelines for using the Rehoboth Assembly Hymn Book application.
         </p>
       </div>
 
@@ -35,7 +35,7 @@ export const TermsPage: React.FC = () => {
           <span>Permitted Use in Church &amp; Devotion</span>
         </h2>
         <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-          The Efik Hymn Book (Ñwed Ikwọ Efik) web application is made freely accessible for:
+          The Rehoboth Assembly Hymn Book (Ñwed Ikwọ Efik) web application is made freely accessible for:
         </p>
         <ul className="list-disc pl-5 space-y-2 text-sm text-muted-foreground">
           <li>Congregational church services and choir rehearsals.</li>

@@ -16,11 +16,11 @@ export default defineConfig({
       },
       includeAssets: ['favicon.svg', 'pwa-192x192.svg', 'pwa-512x512.svg'],
       manifest: {
-        name: 'Efik Hymn Book: Ñwed Ikwọ Efik',
-        short_name: 'Efik Hymns',
-        description: 'Digitized Efik Hymn Book for church worship, personal devotion, and choir rehearsals.',
-        theme_color: '#18422A',
-        background_color: '#FBF9F4',
+        name: 'Rehoboth Assembly Hymn Book — Ñwed Ikwọ Efik',
+        short_name: 'Rehoboth Hymns',
+        description: 'Digital Efik hymn book for Rehoboth Assembly, Great-Ilasa District — church worship, personal devotion, and choir rehearsals.',
+        theme_color: '#0B3D91',
+        background_color: '#F4F6F8',
         display: 'standalone',
         orientation: 'portrait-primary',
         icons: [

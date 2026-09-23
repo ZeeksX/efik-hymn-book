@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BookOpen, ArrowLeft, Check } from 'lucide-react';
+import { ArrowLeft, Check } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { Input, Button } from '../components/ui';
@@ -49,11 +49,16 @@ export const LoginPage: React.FC = () => {
       </Link>
 
       <div className="bg-surface border border-border rounded-[16px] shadow-xs p-6 sm:p-8">
-        {/* Brand */}
+        {/* Brand — official logo with clear space */}
         <div className="text-center mb-7">
-          <span className="inline-flex w-10 h-10 rounded-[12px] items-center justify-center bg-primary text-primary-foreground mb-3">
-            <BookOpen size={19} strokeWidth={1.75} />
-          </span>
+          <img
+            src="/rehoboth-logo.jpg"
+            alt="Rehoboth Assembly logo"
+            className="w-16 h-16 rounded-xl object-cover shadow-xs mx-auto mb-3"
+            width={64}
+            height={64}
+            loading="eager"
+          />
           <h1 className="font-serif text-2xl font-bold text-foreground">
             {isSignUp ? 'Create an Account' : 'Welcome Back'}
           </h1>
@@ -112,9 +117,13 @@ export const LoginPage: React.FC = () => {
               error={errors.password}
             />
 
-            <Button type="submit" className="w-full" size="lg">
+            {/* Primary CTA — gold with navy text, per Rehoboth button system */}
+            <button
+              type="submit"
+              className="w-full h-11 rounded-[10px] bg-gold text-on-gold hover:bg-gold-strong text-sm font-semibold transition-colors focus-ring"
+            >
               {isSignUp ? 'Create Account' : 'Sign In'}
-            </Button>
+            </button>
 
             <p className="text-center text-xs text-muted-foreground">
               {isSignUp ? 'Already have an account? ' : "Don't have an account? "}

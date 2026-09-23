@@ -36,7 +36,7 @@ export const PrivacyPolicyPage: React.FC = () => {
           <span>Summary: No Tracking, No Profiling</span>
         </h2>
         <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-          The Efik Hymn Book application is designed purely as a sacred reading and discovery tool
+          The Rehoboth Assembly Hymn Book application is designed purely as a sacred reading and discovery tool
           for church worship, choir rehearsals, and personal devotion. Signing in is optional and
           exists only to keep your favourites and history in one place.
         </p>

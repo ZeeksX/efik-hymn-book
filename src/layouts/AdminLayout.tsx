@@ -36,11 +36,21 @@ function SidebarContent({ onNavigate }: { onNavigate?: () => void }) {
     <>
       {/* Brand */}
       <div className="px-5 h-16 flex items-center justify-between border-b border-border shrink-0">
-        <Link to="/" className="flex items-center gap-2.5 focus-ring rounded-lg" aria-label="Efik Hymn Book Home">
-          <span className="w-8 h-8 rounded-[10px] flex items-center justify-center bg-primary text-primary-foreground">
-            <BookOpen size={17} strokeWidth={1.75} />
+        <Link to="/" className="flex items-center gap-2.5 focus-ring rounded-lg" aria-label="Rehoboth Assembly Hymn Book Home">
+          <img
+            src="/rehoboth-logo.jpg"
+            alt="Rehoboth Assembly logo"
+            className="w-8 h-8 rounded-lg object-cover"
+            width={32}
+            height={32}
+            loading="eager"
+          />
+          <span className="font-serif font-bold text-sm text-foreground leading-tight">
+            Rehoboth Assembly
+            <span className="block text-[10px] font-sans font-medium text-muted-foreground">
+              Administration
+            </span>
           </span>
-          <span className="font-serif font-bold text-base text-foreground">Efik Hymn Book</span>
         </Link>
       </div>
 

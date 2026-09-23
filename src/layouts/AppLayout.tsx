@@ -3,10 +3,14 @@ import { Outlet, Link } from 'react-router-dom';
 import { AppHeader } from '../components/AppHeader';
 import { MobileNavigation } from '../components/MobileNavigation';
 import { GoToHymnDialog } from '../components/GoToHymnDialog';
+import { OfflineIndicator } from '../components/OfflineIndicator';
 
 export const AppLayout: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col bg-[var(--bg-main)] text-[var(--text-primary)] transition-colors">
+      {/* Offline Connectivity Status Banner */}
+      <OfflineIndicator />
+
       {/* Top Header */}
       <AppHeader />
 

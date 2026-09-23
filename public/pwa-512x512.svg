@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" rx="100" fill="#18422A"/>
+  <rect x="28" y="28" width="456" height="456" rx="76" fill="none" stroke="#B8902E" stroke-width="4" stroke-opacity="0.4"/>
+  <g transform="translate(120, 120) scale(11.33)">
+    <!-- Book open shape -->
+    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" fill="none" stroke="#F5F1E8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" fill="none" stroke="#F5F1E8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- Central Cross in gold -->
+    <line x1="12" y1="6" x2="12" y2="15" stroke="#B8902E" stroke-width="1.8" stroke-linecap="round"/>
+    <line x1="9" y1="9" x2="15" y2="9" stroke="#B8902E" stroke-width="1.8" stroke-linecap="round"/>
+  </g>
+</svg>

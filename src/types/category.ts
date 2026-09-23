@@ -5,4 +5,5 @@ export interface Category {
   description: string;
   hymnCount?: number;
   iconName?: string;
+  color?: string;
 }

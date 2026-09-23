@@ -10,10 +10,10 @@ interface VerseProps {
 export const Verse: React.FC<VerseProps> = ({
   verse,
   textSizeClass,
-  isSerif = false,
+  isSerif = true,
 }) => {
   return (
-    <div className="flex gap-4 sm:gap-6 items-start my-6 sm:my-8">
+    <div id={`verse-${verse.number}`} className="flex gap-4 sm:gap-6 items-start my-6 sm:my-8 scroll-mt-24">
       {/* Verse Number */}
       <span className="shrink-0 w-6 sm:w-8 font-mono text-sm sm:text-base font-bold text-[var(--accent-gold)] pt-1 text-right select-none">
         {verse.number}.
@@ -30,6 +30,17 @@ export const Verse: React.FC<VerseProps> = ({
             {line}
           </p>
         ))}
+
+        {/* English Translation Guide (Devotional meaning) */}
+        {verse.englishLines && verse.englishLines.length > 0 && (
+          <div className="mt-2.5 pt-2 border-t border-[var(--border-subtle)]/40 text-[var(--text-secondary)] opacity-85 font-serif italic text-sm sm:text-base space-y-1">
+            {verse.englishLines.map((line, idx) => (
+              <p key={idx} className="leading-relaxed">
+                {line}
+              </p>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

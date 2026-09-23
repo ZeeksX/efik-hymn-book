@@ -4,9 +4,9 @@ export const HYMNS: Hymn[] = [
   {
     id: '1',
     number: 1,
-    title: 'Kpukpru Ekondo Ekpe Abasi Ubọk',
+    title: 'Nnam Abasi',
     alternateTitle: 'All People That On Earth Do Dwell',
-    category: 'Praise & Adoration',
+    category: 'Praise',
     meter: 'L.M. (8.8.8.8)',
     tune: 'Old 100th',
     key: 'G Major',
@@ -15,7 +15,7 @@ export const HYMNS: Hymn[] = [
       {
         number: 1,
         lines: [
-          'Kpukpru ekondo ekpe Abasi ubọk,',
+          'Nnam Abasi, ke nyin inam,',
           'Ekwo ikwọ idara ke ebe iso Esie;',
           'Enọ Enye ubọñ ye edikpon;',
           'Koro Enye edide Ọbọñ ye Andibot.'
@@ -29,37 +29,13 @@ export const HYMNS: Hymn[] = [
           'Enye emebọk nnyin ke ima Esie;',
           'Inyene kpukpru se idude ke ubọk Esie.'
         ]
-      },
-      {
-        number: 3,
-        lines: [
-          'Ebe ke inua-otop Esie ye ekọm;',
-          'Eduk ke esit efe Esie ye itoro;',
-          'Etorọ Enye, ekọm Enye ke kpukpru ini,',
-          'Koro enyiñ Esie edide eti ndien ekpon.'
-        ]
-      },
-      {
-        number: 4,
-        lines: [
-          'Koro Ọbọñ ọfọnde eti-eti;',
-          'Mbọm Esie eye ke nsinsi nsinsi;',
-          'Akpanikọ Esie nko idikpụhu;',
-          'Enye eyedu ke ofuri emana.'
-        ]
       }
-    ],
-    chorus: [
-      'Itoro, itoro enyene Ete,',
-      'Itoro enyene Eyen ye Edisana Spirit,',
-      'Nte ekedide ke ntọñọ,',
-      'Idahaemi ye ke nsinsi. Amen.'
     ]
   },
   {
     id: '2',
     number: 2,
-    title: 'Edisana, Edisana, Edisana!',
+    title: 'Ufot Nyo',
     alternateTitle: 'Holy, Holy, Holy! Lord God Almighty',
     category: 'Worship',
     meter: '11.12.12.10',
@@ -70,37 +46,82 @@ export const HYMNS: Hymn[] = [
       {
         number: 1,
         lines: [
-          'Edisana, Edisana, Edisana! Ọbọñ Abasi;',
+          'Ufot nyo, Edisana Ọbọñ Abasi;',
           'Ke usenubọk nnyin iyekwo itoro Fo;',
           'Edisana, Edisana, Edisana! Abasi mbọm ye odudu,',
           'Abasi Ita ke Kiet, Edisana Abasi.'
         ]
-      },
+      }
+    ]
+  },
+  {
+    id: '3',
+    number: 3,
+    title: 'Mfon mi',
+    alternateTitle: 'My Strength and Grace',
+    category: 'Prayer',
+    verses: [
       {
-        number: 2,
+        number: 1,
         lines: [
-          'Edisana, Edisana, Edisana! Ndisana owo',
-          'Eduọk anyanya mmọ ke iso ebekpo Fo;',
-          'Mme cherubim ye seraphim etoro Enye,',
-          'Enye emi okodude, odude, edidude.'
+          'Mfon mi oyom Fi, O Abasi mmi,',
+          'Ke ofuri usen ye ini nnaneyo;',
+          'Kpep mi ndisanña ke edisana usung,',
+          'Yak esit mi oyom mbọm Fo.'
         ]
-      },
+      }
+    ]
+  },
+  {
+    id: '4',
+    number: 4,
+    title: 'Ekọŋ',
+    alternateTitle: 'The Lord is Our Defense',
+    category: 'Thanksgiving',
+    verses: [
       {
-        number: 3,
+        number: 1,
         lines: [
-          'Edisana, Edisana, Edisana! Ekikim edịp Fi,',
-          'Kpa mme idiọk owo ikwe ubọñ Fo;',
-          'Afo ikpọñ edi Edisana; babarare owo kiet iduhe',
-          'Emi odude ukem ye Afo ke odudu ye ima.'
+          'Ọbọñ edi ekọñ nnyin ye Andikpeme,',
+          'Enye akan kpukpru mme asua;',
+          'Yak nnyin ikọm Enye ye esit idara,',
+          'Koro ima Esie midikpụhu.'
         ]
-      },
+      }
+    ]
+  },
+  {
+    id: '5',
+    number: 5,
+    title: 'Abasi Mmi',
+    alternateTitle: 'My God and Protector',
+    category: 'Praise',
+    verses: [
       {
-        number: 4,
+        number: 1,
         lines: [
-          'Edisana, Edisana, Edisana! Ọbọñ Abasi;',
-          'Kpukpru se Afo okobotde eyetoro Enyiñ Fo;',
-          'Edisana, Edisana, Edisana! Mbọm ye odudu,',
-          'Abasi Ita ke Kiet, Edisana Abasi.'
+          'Abasi mmi, ke nyin inam,',
+          'Nta ũduak ke mmõ etuk;',
+          'Ndem mfon, ndem okon,',
+          'Ke døk ukpem nto nye.'
+        ]
+      }
+    ]
+  },
+  {
+    id: '6',
+    number: 6,
+    title: 'Iman Efik',
+    alternateTitle: 'Spirit of Peace',
+    category: 'Holy Spirit',
+    verses: [
+      {
+        number: 1,
+        lines: [
+          'Edisana Spirit, di duk ke esit nnyin,',
+          'Yak nnyin idiana kiet ke ima;',
+          'Kpep nnyin ndikwo ikwọ edinam,',
+          'Ye itoro Abasi nnyin.'
         ]
       }
     ]
@@ -108,9 +129,81 @@ export const HYMNS: Hymn[] = [
   {
     id: '7',
     number: 7,
+    title: 'Únò isùng',
+    alternateTitle: 'Guide Our Steps in Salvation',
+    category: 'Salvation',
+    verses: [
+      {
+        number: 1,
+        lines: [
+          'Únò isùng nnyin ke eti usung,',
+          'Nnyin imosuk ibuot inọ Fi;',
+          'Anyanga nnyin ke afanikọñ,',
+          'Ndien nọ nnyin emem Fo.'
+        ]
+      }
+    ]
+  },
+  {
+    id: '8',
+    number: 8,
+    title: 'Nyin Israel',
+    alternateTitle: 'People of the Covenant',
+    category: 'Worship',
+    verses: [
+      {
+        number: 1,
+        lines: [
+          'Nyin Israel imodara ke iso Fo,',
+          'Afo Andibot enyọñ ye isọñ;',
+          'Yak itoro Fo ọyọhọ ofuri ekondo,',
+          'Tutu amama nsinsi.'
+        ]
+      }
+    ]
+  },
+  {
+    id: '9',
+    number: 9,
+    title: 'Kaŋ Idiong',
+    alternateTitle: 'Fountain of Blessings',
+    category: 'Prayer',
+    verses: [
+      {
+        number: 1,
+        lines: [
+          'Kaŋ idiong, di diọñ nnyin mi,',
+          'Nọ nnyin edisana mbọm Fo;',
+          'Kpep nnyin ndituak ibuot mbon,',
+          'Ke edinam ye akpanikọ.'
+        ]
+      }
+    ]
+  },
+  {
+    id: '10',
+    number: 10,
+    title: 'Atai',
+    alternateTitle: 'The Supreme Sovereign',
+    category: 'Praise',
+    verses: [
+      {
+        number: 1,
+        lines: [
+          'Atai Andikara kpukpru nñkpọ,',
+          'Ubọñ ye odudu enyene Fi;',
+          'Kpukpru mme idut etoro Enyiñ Fo,',
+          'Haleluya ke nsinsi!'
+        ]
+      }
+    ]
+  },
+  {
+    id: '11',
+    number: 11,
     title: 'Abasi Ibom Andikpon Nkan',
     alternateTitle: 'God Omnipotent Reigneth',
-    category: 'Praise & Adoration',
+    category: 'Praise',
     meter: '8.7.8.7.D',
     tune: 'Hyfrydol',
     key: 'F Major',
@@ -154,13 +247,9 @@ export const HYMNS: Hymn[] = [
   {
     id: '12',
     number: 12,
-    title: 'K’ini Eyo Eserede',
+    title: 'Ufot Nyo',
     alternateTitle: 'When Morning Gilds the Skies',
-    category: 'Morning Devotion',
-    meter: '6.6.6.D',
-    tune: 'Laudes Domini',
-    key: 'C Major',
-    tags: ['morning', 'praise', 'sunrise', 'gratitude'],
+    category: 'Worship',
     verses: [
       {
         number: 1,
@@ -172,27 +261,23 @@ export const HYMNS: Hymn[] = [
           'Ikwọ mi edidi kiet:',
           'Yak etoro Jesus Christ!'
         ]
-      },
+      }
+    ]
+  },
+  {
+    id: '18',
+    number: 18,
+    title: 'Abasi Nto',
+    alternateTitle: 'Come Let Us Worship',
+    category: 'Worship',
+    verses: [
       {
-        number: 2,
+        number: 1,
         lines: [
-          'K’ini mkpa akande mi okuk,',
-          'Mme mfri idara mi ekurede,',
-          'Yak etoro Jesus Christ!',
-          'K’ini nnaneyo etienede mi,',
-          'Nditiene nsua mfehe:',
-          'Yak etoro Jesus Christ!'
-        ]
-      },
-      {
-        number: 3,
-        lines: [
-          'Yak kpukpru ikọt Abasi',
-          'Ekwo ikwọ emi k’esit kiet:',
-          'Yak etoro Jesus Christ!',
-          'Ke nsinsi emana,',
-          'Ikwọ idara nnyin eyedụhe:',
-          'Yak etoro Jesus Christ!'
+          'Abasi, ke dook mmõ etoro Fi,',
+          'Nnyin idu ke ebekpo Fo;',
+          'Men uyo Fo nam nnyin ikop,',
+          'Yak emem Fo odu ye nnyin.'
         ]
       }
     ]
@@ -357,50 +442,107 @@ export const HYMNS: Hymn[] = [
     ]
   },
   {
-    id: '42',
-    number: 42,
-    title: 'Abasi Obuñ, Enye Edi Andikara',
-    alternateTitle: 'O Worship the King All Glorious Above',
-    category: 'Praise & Adoration',
-    meter: '10.10.11.11',
-    tune: 'Hanover',
-    key: 'A Major',
-    tags: ['praise', 'king', 'adoration', 'creator'],
+    id: '41',
+    number: 41,
+    title: 'Andibot Ekondo',
+    alternateTitle: 'Creator of the Universe',
+    category: 'Worship',
     verses: [
       {
         number: 1,
         lines: [
-          'Toro Edidem emi odude k’enyọñ,',
-          'Kwo ima Esie ye odudu Esie nko;',
-          'Enye edi Otuekọñ ye Andikpeme nnyin,',
-          'Enye ebọp ebekpo Esie ke edisana ubọñ.'
+          'Andibot ekondo ke enyọñ,',
+          'Ye kpukpru se idude mi;',
+          'Nnyin imosuk ibuot inọ Fi,',
+          'Koro Afo edide Ọbọñ.'
+        ]
+      }
+    ]
+  },
+  {
+    id: '42',
+    number: 42,
+    title: 'Abasi Mmi',
+    alternateTitle: 'My God and King',
+    category: 'Praise',
+    meter: '8.8.8.8',
+    tune: 'Hanover',
+    key: 'A Major',
+    scripture: {
+      text: '"The Lord is my strength and my song."',
+      reference: 'Exodus 15:2'
+    },
+    tags: ['praise', 'king', 'strength', 'rock'],
+    verses: [
+      {
+        number: 1,
+        lines: [
+          'Abasi mmi, ke nyin inam,',
+          'Nta ũduak ke mmõ etuk.',
+          'Ndem mfon, ndem okon,',
+          'Ke døk ukpem nto nye.'
+        ],
+        englishLines: [
+          'My God and King. You are my strength,',
+          'Your love endures forever.',
+          'My Light, my Helper,',
+          'You lead my path each day.'
         ]
       },
       {
         number: 2,
         lines: [
-          'Tañba odudu Esie, kwo mbọm Esie,',
-          'Ọfọñ Esie edi unywana emi asianade;',
-          'Ufọk Esie edi ikpa-enyọñ emi ọyọhọde,',
-          'Obubịt obubum emi edide chariot Esie.'
+          'Afo\'di Andinyanga mmi,',
+          'Ima Fo ikpụhu tutu;',
+          'Ke ererimbot ye heaven,',
+          'Enying Fo eye akaha.'
+        ],
+        englishLines: [
+          'You are my Savior and my Rock,',
+          'Your grace remains steadfast;',
+          'In all the earth and heaven above,',
+          'How glorious is Your name.'
         ]
       },
       {
         number: 3,
         lines: [
-          'Mbọm Fo, O Abasi, usem idikemeke nditīñ,',
-          'Enye odu k’ofuri ofuri se Afo anamde;',
-          'Ke obot, ke edim, ke ata eti unywana,',
-          'Ndien k’edisana idap emi ọdọñde nnyin.'
+          'Nyedi ye esit edikọm,',
+          'Ntoro Enye kpukpru usen;',
+          'Koro mbọm Fo okponde,',
+          'Tutu nsinsi nsinsi.'
+        ],
+        englishLines: [
+          'I come with a heart full of praise,',
+          'To magnify Him day by day;',
+          'For Your abundant mercy reigns,',
+          'Now and forevermore.'
         ]
-      },
+      }
+    ],
+    chorus: [
+      'Itoro enyene Abasi mmi,',
+      'Andikpon nkan ke enyọñ!'
+    ],
+    englishChorus: [
+      'Glory be unto my God,',
+      'The highest in the heavens!'
+    ]
+  },
+  {
+    id: '43',
+    number: 43,
+    title: 'Ima Abasi Okpon Akaha',
+    alternateTitle: 'The Love of God is Greater Far',
+    category: 'Praise',
+    verses: [
       {
-        number: 4,
+        number: 1,
         lines: [
-          'Nnyin idi ntan, idi mmem-mmem nko,',
-          'Edi nnyin imọbuọt idem ke mbọm Fo;',
-          'Afo ufreke nnyin, uduọkke nnyin tutu amama,',
-          'Andifak nnyin, Ufan nnyin, ye Andikpon nnyin.'
+          'Ima Abasi okpon akaha,',
+          'Inua owo ikemeke nditịñ;',
+          'Enye ọkọñ akan mme ntanta-ọfiọñ,',
+          'Ndien etuñ akan idiọk-ekikere.'
         ]
       }
     ]
@@ -1955,6 +2097,60 @@ export const HYMNS: Hymn[] = [
       'Haleluya! Toro Ọbọñ!',
       'Ubọñ, itoro, ye odudu enyene Abasi nnyin',
       'Ke nsinsi nsinsi. Amen!'
+    ]
+  },
+  {
+    id: '76',
+    number: 76,
+    title: 'Abasi Ekpe',
+    alternateTitle: 'Lord of Deliverance',
+    category: 'Prayer',
+    verses: [
+      {
+        number: 1,
+        lines: [
+          'Mbiak Abasi, nsisom ke ubọk Fo,',
+          'Ke ini nnaneyo ye afanikọñ;',
+          'Kpep mi ndibuọt idem ke Afo,',
+          'Andinyanga mi ke nsinsi.'
+        ]
+      }
+    ]
+  },
+  {
+    id: '87',
+    number: 87,
+    title: 'Kaŋ Idiong',
+    alternateTitle: 'Shower Your Grace Upon Us',
+    category: 'Prayer',
+    verses: [
+      {
+        number: 1,
+        lines: [
+          'Kaŋ idiong nnyin, diọñ mme owo Fo,',
+          'Nam mbọm Fo asaña ye nnyin;',
+          'K’ufọk ye k’utom nnyin kpukpru ini,',
+          'Yak ubọñ Fo ayak mi.'
+        ]
+      }
+    ]
+  },
+  {
+    id: '102',
+    number: 102,
+    title: 'Útang Mfon',
+    alternateTitle: 'Thanksgiving for His Goodness',
+    category: 'Thanksgiving',
+    verses: [
+      {
+        number: 1,
+        lines: [
+          'Útang mfon Abasi ọfọn eti-eti,',
+          'Enye ọbọk nnyin ke ima;',
+          'Yak nnyin ida itoro inọ Enye,',
+          'Koro mbọm Esie mîkụreke.'
+        ]
+      }
     ]
   }
 ];

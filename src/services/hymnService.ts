@@ -56,14 +56,14 @@ export const hymnService = {
 
   getCategories(): (Category & { count: number })[] {
     return CATEGORIES.map((cat) => {
-      const count = HYMNS.filter((h) =>
+      const localCount = HYMNS.filter((h) =>
         h.category.toLowerCase().includes(cat.name.toLowerCase()) ||
         cat.name.toLowerCase().includes(h.category.toLowerCase())
       ).length;
 
       return {
         ...cat,
-        count,
+        count: cat.hymnCount ?? localCount,
       };
     });
   },

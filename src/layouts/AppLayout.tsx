@@ -4,6 +4,7 @@ import { AppHeader } from '../components/AppHeader';
 import { MobileNavigation } from '../components/MobileNavigation';
 import { GoToHymnDialog } from '../components/GoToHymnDialog';
 import { OfflineIndicator } from '../components/OfflineIndicator';
+import { AuthModal } from '../components/AuthModal';
 
 export const AppLayout: React.FC = () => {
   return (
@@ -52,6 +53,9 @@ export const AppLayout: React.FC = () => {
 
       {/* Global Quick Hymn Modal */}
       <GoToHymnDialog />
+
+      {/* Global Auth Modal */}
+      <AuthModal />
     </div>
   );
 };

@@ -1,6 +1,7 @@
 export interface HymnVerse {
   number: number;
   lines: string[];
+  englishLines?: string[];
 }
 
 export interface Hymn {
@@ -11,6 +12,11 @@ export interface Hymn {
   category: string;
   verses: HymnVerse[];
   chorus?: string[];
+  englishChorus?: string[];
+  scripture?: {
+    text: string;
+    reference: string;
+  };
   tags?: string[];
   meter?: string;
   tune?: string;

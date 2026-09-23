@@ -1,33 +1,40 @@
 import React from 'react';
-import { Grid } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 import { CategoryCard } from '../components/CategoryCard';
 import { hymnService } from '../services/hymnService';
 
 export const CategoriesPage: React.FC = () => {
   const categories = hymnService.getCategories();
-  const totalHymns = hymnService.getAllHymns().length;
 
   return (
-    <div className="space-y-6 max-w-5xl mx-auto">
-      {/* Header */}
+    <div className="space-y-8 max-w-5xl mx-auto py-2">
+      {/* Header matching Screen 5 */}
       <div>
-        <div className="flex items-center gap-2 text-[var(--accent-gold)] text-xs font-semibold uppercase tracking-widest mb-1">
-          <Grid size={14} />
-          <span>Liturgical Index</span>
-        </div>
-        <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[var(--text-primary)]">
-          Hymn Categories
+        <h1 className="font-serif text-3xl sm:text-4xl font-bold text-[var(--text-primary)]">
+          Categories
         </h1>
         <p className="mt-1 text-sm text-[var(--text-secondary)]">
-          Explore hymns organized by liturgical themes, church seasons, and devotional topics across {totalHymns} hymns.
+          Explore hymns by category
         </p>
       </div>
 
-      {/* Grid of Categories */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5 sm:gap-4">
+      {/* Grid of Category Cards */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-4 sm:gap-6">
         {categories.map((cat) => (
           <CategoryCard key={cat.id} category={cat} />
         ))}
+      </div>
+
+      {/* Link to browse all */}
+      <div className="pt-4 text-center">
+        <Link
+          to="/hymns"
+          className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-semibold text-[var(--brand-primary)] hover:underline"
+        >
+          <span>View all hymns</span>
+          <ArrowRight size={14} />
+        </Link>
       </div>
     </div>
   );

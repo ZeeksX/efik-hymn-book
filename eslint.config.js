@@ -19,4 +19,11 @@ export default defineConfig([
       globals: globals.browser,
     },
   },
+  {
+    // Context files legitimately export hooks alongside providers.
+    files: ['src/context/**/*.{ts,tsx}', 'src/components/ui/Toast.tsx'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
+    },
+  },
 ])

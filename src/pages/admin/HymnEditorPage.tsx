@@ -44,16 +44,7 @@ export const HymnEditorPage: React.FC = () => {
   const [saveState, setSaveState] = useState<SaveState>('saved');
   const saveTimer = useRef<number | null>(null);
 
-  /* ----- Dirty tracking ----- */
-  useEffect(() => {
-    if (!existing) return;
-    const changed =
-      form.title !== existing.title ||
-      form.number !== existing.number ||
-      (form.alternateTitle ?? '') !== (existing.alternateTitle ?? '');
-    if (changed) setSaveState('unsaved');
-  }, [form, existing]);
-
+  /* ----- Save timer cleanup ----- */
   useEffect(() => {
     return () => {
       if (saveTimer.current) window.clearTimeout(saveTimer.current);

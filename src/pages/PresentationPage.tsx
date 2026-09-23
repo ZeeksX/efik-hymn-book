@@ -94,8 +94,10 @@ export const PresentationPage: React.FC = () => {
     hideTimer.current = window.setTimeout(() => setControlsVisible(false), 2600);
   };
 
+  // Re-arm the hide timer on slide change; controls are shown by user interaction.
   useEffect(() => {
-    armHideTimer();
+    if (hideTimer.current) window.clearTimeout(hideTimer.current);
+    hideTimer.current = window.setTimeout(() => setControlsVisible(false), 2600);
     return () => {
       if (hideTimer.current) window.clearTimeout(hideTimer.current);
     };

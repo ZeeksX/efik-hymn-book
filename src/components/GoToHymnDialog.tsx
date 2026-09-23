@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Delete, CornerDownLeft } from 'lucide-react';
 import { Modal, Button } from './ui';
@@ -7,16 +7,17 @@ import { hymnService } from '../services/hymnService';
 
 export const GoToHymnDialog: React.FC = () => {
   const { isGoToHymnOpen, closeGoToHymn } = useApp();
+
+  // Mount a fresh inner form on every open so the input starts empty
+  // without resetting state inside an effect.
+  if (!isGoToHymnOpen) return null;
+  return <GoToHymnDialogInner onClose={closeGoToHymn} />;
+};
+
+const GoToHymnDialogInner: React.FC<{ onClose: () => void }> = ({ onClose }) => {
   const [hymnNumberInput, setHymnNumberInput] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (isGoToHymnOpen) {
-      setHymnNumberInput('');
-      setErrorMessage('');
-    }
-  }, [isGoToHymnOpen]);
 
   const parsedNumber = parseInt(hymnNumberInput, 10);
 
@@ -24,8 +25,6 @@ export const GoToHymnDialog: React.FC = () => {
     () => (!isNaN(parsedNumber) ? hymnService.getHymnByNumber(parsedNumber) : undefined),
     [parsedNumber]
   );
-
-  if (!isGoToHymnOpen) return null;
 
   const handleSubmit = (e?: React.FormEvent) => {
     if (e) e.preventDefault();
@@ -38,7 +37,7 @@ export const GoToHymnDialog: React.FC = () => {
       setErrorMessage(`Hymn ${parsedNumber} was not found in this edition.`);
       return;
     }
-    closeGoToHymn();
+    onClose();
     navigate(`/hymns/${hymn.id}`);
   };
 
@@ -52,14 +51,14 @@ export const GoToHymnDialog: React.FC = () => {
 
   return (
     <Modal
-      open={isGoToHymnOpen}
-      onClose={closeGoToHymn}
+      open={true}
+      onClose={onClose}
       title="Go to Hymn"
       description="Enter hymn number"
       size="sm"
       footer={
         <>
-          <Button variant="ghost" onClick={closeGoToHymn}>
+          <Button variant="ghost" onClick={onClose}>
             Cancel
           </Button>
           <Button onClick={handleSubmit} disabled={!hymnNumberInput.trim()} className="min-w-[120px]">

@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { Search, History, X, Clock } from 'lucide-react';
 import { searchService } from '../services/searchService';
@@ -14,13 +14,17 @@ export const SearchPage: React.FC = () => {
   const urlQuery = searchParams.get('q') ?? '';
   const activeTab = (searchParams.get('type') as SearchTab) || 'all';
   const [inputValue, setInputValue] = useState(urlQuery);
+  const [lastUrlQuery, setLastUrlQuery] = useState(urlQuery);
   const [displayLimit, setDisplayLimit] = useState(15);
 
   const { addRecentSearch, recentSearches, clearRecentSearches } = useApp();
 
-  useEffect(() => {
+  // Sync the input when the URL changes (back/forward navigation) —
+  // render-phase adjustment, the React-recommended alternative to an effect.
+  if (urlQuery !== lastUrlQuery) {
+    setLastUrlQuery(urlQuery);
     setInputValue(urlQuery);
-  }, [urlQuery]);
+  }
 
   const setParams = (q: string, type: SearchTab) => {
     const next = new URLSearchParams();

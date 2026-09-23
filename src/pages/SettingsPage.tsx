@@ -98,16 +98,7 @@ export const SettingsPage: React.FC = () => {
     toast('All favourites cleared', 'info');
   };
 
-  const Section: React.FC<{ title: string; children: React.ReactNode; className?: string }> = ({
-    title,
-    children,
-    className = '',
-  }) => (
-    <section className={`p-5 sm:p-6 rounded-[14px] border border-border bg-surface space-y-4 ${className}`}>
-      <h2 className="text-h3 font-serif text-foreground">{title}</h2>
-      {children}
-    </section>
-  );
+  const sectionCls = 'p-5 sm:p-6 rounded-[14px] border border-border bg-surface space-y-4';
 
   return (
     <div className="max-w-2xl mx-auto space-y-5">
@@ -119,7 +110,8 @@ export const SettingsPage: React.FC = () => {
       </div>
 
       {/* Reading */}
-      <Section title="Reading">
+      <section className={sectionCls} aria-label="Reading settings">
+        <h2 className="text-h3 font-serif text-foreground">Reading</h2>
         <div>
           <p className="text-sm font-medium text-foreground mb-2">Text Size</p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
@@ -182,10 +174,11 @@ export const SettingsPage: React.FC = () => {
             label="Use serif lyrics"
           />
         </div>
-      </Section>
+      </section>
 
       {/* Appearance */}
-      <Section title="Appearance">
+      <section className={sectionCls} aria-label="Appearance settings">
+        <h2 className="text-h3 font-serif text-foreground">Appearance</h2>
         <div className="flex flex-wrap items-center justify-between gap-3">
           <p className="text-sm font-medium text-foreground">Theme</p>
           <Segmented
@@ -199,11 +192,12 @@ export const SettingsPage: React.FC = () => {
             ]}
           />
         </div>
-      </Section>
+      </section>
 
       {/* Data */}
-      <Section title="Data" className="!border-danger/25">
-        <p className="text-xs text-muted-foreground -mt-2">
+      <section className={`${sectionCls} !border-danger/25`} aria-label="Data settings">
+        <h2 className="text-h3 font-serif text-foreground">Data</h2>
+        <p className="text-xs text-muted-foreground">
           These actions permanently remove data stored on this device.
         </p>
         <div className="flex flex-col sm:flex-row sm:items-center gap-2.5">
@@ -214,7 +208,7 @@ export const SettingsPage: React.FC = () => {
             Clear Local Favourites
           </Button>
         </div>
-      </Section>
+      </section>
 
       {/* Reset */}
       <div className="flex items-center justify-between pt-1">

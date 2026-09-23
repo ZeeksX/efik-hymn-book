@@ -126,7 +126,7 @@ export const AdminDashboardPage: React.FC = () => {
               <span>Corrections</span>
             </div>
             {correctionsCount > 0 && (
-              <span className="px-2 py-0.5 rounded-full text-[11px] font-bold bg-amber-500 text-black">
+              <span className="px-2 py-0.5 rounded-md text-[11px] font-bold bg-amber-500 text-black">
                 {correctionsCount}
               </span>
             )}

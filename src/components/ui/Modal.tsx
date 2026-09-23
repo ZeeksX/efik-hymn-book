@@ -169,9 +169,9 @@ export const Drawer: React.FC<DrawerProps> = ({
         aria-modal="true"
         aria-label={title}
         onClick={(e) => e.stopPropagation()}
-        className={`absolute top-0 bottom-0 ${side === 'right' ? 'right-0' : 'left-0'} w-full max-w-md bg-surface border-${
-          side === 'right' ? 'l' : 'r'
-        } border-border shadow-xl flex flex-col animate-sheet-up sm:animate-dialog-in`}
+        className={`absolute top-0 bottom-0 ${
+          side === 'right' ? 'right-0 border-l' : 'left-0 border-r'
+        } border-border bg-surface shadow-xl flex flex-col animate-dialog-in`}
       >
         {title && (
           <div className="flex items-center justify-between gap-4 px-5 py-4 border-b border-border">

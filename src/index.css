@@ -1,62 +1,110 @@
 @import "tailwindcss";
 
+/* ============================================================
+   EFIK HYMN BOOK — SEMANTIC DESIGN TOKENS
+   Single source of truth for light & dark themes.
+   Components consume ONLY these tokens.
+   ============================================================ */
+
+@theme inline {
+  /* Typography */
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-serif: "Lora", Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
 @layer base {
   :root {
-    --bg-main: #FBF9F4;
-    --bg-surface: #FFFFFF;
-    --bg-surface-elevated: #F5F1E8;
-    --border-subtle: #E8E2D5;
-    --border-strong: #D1C7B5;
-    
-    --text-primary: #1C1A18;
-    --text-secondary: #5E5851;
-    --text-tertiary: #8A8379;
+    /* Surfaces */
+    --background: #f8f6f0;          /* warm ivory / parchment */
+    --surface: #ffffff;
+    --surface-secondary: #f2f0e9;
+    --surface-elevated: #ffffff;
 
-    --brand-primary: #18422A;
-    --brand-primary-hover: #123320;
-    --brand-primary-light: #EBF3ED;
-    --brand-primary-dark: #0D2618;
-    
-    --accent-gold: #B8902E;
-    --accent-gold-light: #F7F1DF;
-    --accent-gold-dark: #91701F;
-    
-    --color-error: #B93838;
-    --color-success: #227A4B;
+    /* Text */
+    --foreground: #1f1c18;          /* deep warm charcoal */
+    --muted-foreground: #6d675e;    /* warm gray */
+    --subtle-foreground: #948d81;
+
+    /* Borders */
+    --border: #e5dfd2;
+    --border-strong: #cfc7b6;
+
+    /* Brand — deep Efik green */
+    --primary: #0f5132;
+    --primary-hover: #0b4128;
+    --primary-foreground: #ffffff;
+    --primary-soft: #e9f1ea;        /* tinted fill for selected states */
+    --primary-soft-border: #c3d9c9;
+
+    /* Accent — restrained heritage gold */
+    --accent: #a07b23;
+    --accent-muted: #f5efdd;
+
+    /* Feedback */
+    --success: #227a4b;
+    --success-soft: #e6f2ea;
+    --warning: #a16207;
+    --warning-soft: #f9f1dc;
+    --danger: #b03a2e;
+    --danger-soft: #f9e9e6;
+
+    /* Inputs & focus */
+    --input-bg: #ffffff;
+    --focus-ring: #0f5132;
+
+    /* Shadows — soft, neutral */
+    --shadow-color: 220 40% 20%;
   }
 
-  .dark {
-    --bg-main: #111713;
-    --bg-surface: #18221B;
-    --bg-surface-elevated: #1F2C23;
-    --border-subtle: #29382E;
-    --border-strong: #384C3F;
-    
-    --text-primary: #F2EFE8;
-    --text-secondary: #ADA69A;
-    --text-tertiary: #7D776C;
+  [data-theme="dark"] {
+    /* Surfaces */
+    --background: #101713;
+    --surface: #17201b;
+    --surface-secondary: #1d2821;
+    --surface-elevated: #243029;
 
-    --brand-primary: #2B6B46;
-    --brand-primary-hover: #378557;
-    --brand-primary-light: #1A3123;
-    --brand-primary-dark: #0D2115;
-    
-    --accent-gold: #D4AE4B;
-    --accent-gold-light: #2D2716;
-    --accent-gold-dark: #B59338;
-    
-    --color-error: #E56E6E;
-    --color-success: #49A470;
+    /* Text */
+    --foreground: #ede9dd;
+    --muted-foreground: #a8a294;
+    --subtle-foreground: #7d776b;
+
+    /* Borders */
+    --border: #2a352d;
+    --border-strong: #3d4a40;
+
+    /* Brand — brighter accessible heritage green */
+    --primary: #3d8b63;
+    --primary-hover: #4c9f74;
+    --primary-foreground: #0c130e;
+    --primary-soft: #1d2f24;
+    --primary-soft-border: #2f4a39;
+
+    /* Accent */
+    --accent: #d3ac54;
+    --accent-muted: #2b2416;
+
+    /* Feedback */
+    --success: #58b380;
+    --success-soft: #1c2b21;
+    --warning: #d9a441;
+    --warning-soft: #2b2416;
+    --danger: #e07856;
+    --danger-soft: #33201b;
+
+    /* Inputs & focus */
+    --input-bg: #131a16;
+    --focus-ring: #5cab82;
   }
 
   * {
-    border-color: var(--border-subtle);
+    border-color: var(--border);
   }
 
   html {
-    font-family: 'Manrope', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background-color: var(--bg-main);
-    color: var(--text-primary);
+    font-family: var(--font-sans);
+    background-color: var(--background);
+    color: var(--foreground);
     -webkit-tap-highlight-color: transparent;
     scroll-behavior: smooth;
   }
@@ -64,54 +112,140 @@
   body {
     min-height: 100vh;
     overflow-x: hidden;
-    background-color: var(--bg-main);
-    color: var(--text-primary);
-    transition: background-color 0.25s ease, color 0.25s ease;
+    background-color: var(--background);
+    color: var(--foreground);
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  ::selection {
+    background-color: var(--primary-soft);
+    color: var(--foreground);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 
+/* ---------- Tailwind theme bridge (semantic utilities) ---------- */
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-secondary: var(--surface-secondary);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-foreground: var(--foreground);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-subtle-foreground: var(--subtle-foreground);
+  --color-border-subtle: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary-soft: var(--primary-soft);
+  --color-primary-soft-border: var(--primary-soft-border);
+  --color-accent: var(--accent);
+  --color-accent-muted: var(--accent-muted);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-input-bg: var(--input-bg);
+  --color-focus-ring: var(--focus-ring);
+}
+
+/* ---------- Typography utilities ---------- */
 .font-serif {
-  font-family: 'Lora', Georgia, Cambria, 'Times New Roman', Times, serif;
+  font-family: var(--font-serif);
 }
 
-.font-sans {
-  font-family: 'Manrope', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+.text-display {
+  font-family: var(--font-serif);
+  font-size: clamp(2.25rem, 4vw, 3.25rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-weight: 700;
 }
 
-/* Custom Utilities for Hymn Reader */
+.text-h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  font-weight: 700;
+}
+
+.text-h2 {
+  font-family: var(--font-serif);
+  font-size: clamp(1.375rem, 2vw, 1.75rem);
+  line-height: 1.3;
+  font-weight: 700;
+}
+
+.text-h3 {
+  font-size: 1.125rem;
+  line-height: 1.4;
+  font-weight: 600;
+}
+
+.text-caption {
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+/* ---------- Hymn reader type scale ---------- */
 .hymn-verse-line {
   line-height: 1.85;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.005em;
 }
 
-/* Font Size Scales for Hymn Reader */
 .hymn-size-sm {
-  font-size: 1.0rem;
-  line-height: 1.75rem;
+  font-size: 1.0625rem;
+  line-height: 1.85rem;
 }
 
 .hymn-size-md {
-  font-size: 1.18rem;
-  line-height: 2.15rem;
+  font-size: 1.1875rem;
+  line-height: 2.1rem;
 }
 
 .hymn-size-lg {
-  font-size: 1.38rem;
-  line-height: 2.5rem;
+  font-size: 1.375rem;
+  line-height: 2.4rem;
 }
 
 .hymn-size-xl {
-  font-size: 1.65rem;
-  line-height: 2.9rem;
+  font-size: 1.625rem;
+  line-height: 2.8rem;
 }
 
-/* Presentation Mode Scale */
 .hymn-size-present {
-  font-size: clamp(1.8rem, 4vw, 2.75rem);
+  font-size: clamp(1.75rem, 4vw, 2.75rem);
   line-height: 1.5;
 }
 
-/* Hide scrollbar for category pills navigation */
+/* ---------- Focus ring (visible in both themes) ---------- */
+.focus-ring {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.focus-ring:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* ---------- Scrollbar hiding (horizontal chip rails) ---------- */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -120,11 +254,63 @@
   scrollbar-width: none;
 }
 
-/* Accessible focus ring */
-.focus-ring {
-  outline: 2px solid transparent;
-  outline-offset: 2px;
+/* ---------- Safe area for mobile bottom navigation ---------- */
+.safe-area-pb {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
-.focus-ring:focus-visible {
-  outline: 2px solid var(--accent-gold);
+
+/* ---------- Modal / overlay motion (respect reduced motion) ---------- */
+@keyframes overlay-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes dialog-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes sheet-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes menu-in {
+  from { opacity: 0; transform: translateY(-4px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.animate-overlay-in {
+  animation: overlay-in 160ms ease-out;
+}
+
+.animate-dialog-in {
+  animation: dialog-in 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.animate-sheet-up {
+  animation: sheet-up 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.animate-toast-in {
+  animation: toast-in 180ms ease-out;
+}
+
+.animate-menu-in {
+  animation: menu-in 140ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-overlay-in,
+  .animate-dialog-in,
+  .animate-sheet-up,
+  .animate-toast-in,
+  .animate-menu-in {
+    animation: none;
+  }
 }

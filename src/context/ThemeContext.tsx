@@ -26,21 +26,14 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
     const applyTheme = () => {
-      const activeDark =
-        theme === 'dark' || (theme === 'system' && mediaQuery.matches);
-
+      const activeDark = theme === 'dark' || (theme === 'system' && mediaQuery.matches);
       setIsDark(activeDark);
+      root.setAttribute('data-theme', activeDark ? 'dark' : 'light');
+      root.style.colorScheme = activeDark ? 'dark' : 'light';
 
-      if (activeDark) {
-        root.classList.add('dark');
-      } else {
-        root.classList.remove('dark');
-      }
-
-      // Update meta theme-color for browser tab / mobile browser status bar
       const metaThemeColor = document.querySelector('meta[name="theme-color"]');
       if (metaThemeColor) {
-        metaThemeColor.setAttribute('content', activeDark ? '#111713' : '#FBF9F4');
+        metaThemeColor.setAttribute('content', activeDark ? '#101713' : '#F8F6F0');
       }
     };
 

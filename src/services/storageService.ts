@@ -48,6 +48,15 @@ export const storageService = {
     return this.getFavorites().includes(id);
   },
 
+  // Favourites (bulk)
+  clearFavorites(): void {
+    try {
+      localStorage.removeItem(FAVORITES_KEY);
+    } catch (e) {
+      console.error('Failed to clear favorites', e);
+    }
+  },
+
   // Recently Viewed
   getRecentlyViewed(): string[] {
     try {
@@ -94,7 +103,7 @@ export const storageService = {
       const current = this.getRecentSearches().filter(
         (q) => q.toLowerCase() !== trimmed.toLowerCase()
       );
-      const updated = [trimmed, ...current].slice(0, 8);
+      const updated = [trimmed, ...current].slice(0, 12);
       localStorage.setItem(RECENT_SEARCHES_KEY, JSON.stringify(updated));
       return updated;
     } catch {

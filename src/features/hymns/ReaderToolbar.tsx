@@ -25,7 +25,7 @@ export const ReaderToolbar: React.FC<ReaderToolbarProps> = ({
         .map((v) => `${v.number}.\n${v.lines.join('\n')}`)
         .join('\n\n');
       const chorusText = hymn.chorus ? `\n\nCHORUS:\n${hymn.chorus.join('\n')}` : '';
-      const fullText = `HYMN ${hymn.number}: ${hymn.title}\n(${hymn.category})\n\n${versesText}${chorusText}\n\n— Efik Hymn Book`;
+      const fullText = `HYMN ${hymn.number}: ${hymn.title}\n(${hymn.category})\n\n${versesText}${chorusText}\n\nEfik Hymn Book`;
 
       await navigator.clipboard.writeText(fullText);
       setCopied(true);
@@ -39,7 +39,7 @@ export const ReaderToolbar: React.FC<ReaderToolbarProps> = ({
     if (navigator.share) {
       try {
         await navigator.share({
-          title: `Hymn ${hymn.number} — ${hymn.title}`,
+          title: `Hymn ${hymn.number}: ${hymn.title}`,
           text: `Read Hymn ${hymn.number} (${hymn.title}) from the Efik Hymn Book:`,
           url: window.location.href,
         });

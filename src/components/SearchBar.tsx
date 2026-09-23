@@ -93,7 +93,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
               type="button"
               onClick={handleClear}
               aria-label="Clear search query"
-              className="p-1 rounded-full text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-elevated)] transition-colors cursor-pointer"
+              className="p-1 rounded-md text-[var(--text-tertiary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface-elevated)] transition-colors cursor-pointer"
             >
               <X size={16} />
             </button>

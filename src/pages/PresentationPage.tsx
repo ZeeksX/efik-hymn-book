@@ -159,7 +159,7 @@ export const PresentationPage: React.FC = () => {
       <main className="flex-1 flex flex-col items-center justify-center text-center max-w-5xl mx-auto px-4 py-6">
         {currentSlide.type === 'title' ? (
           <div className="space-y-4 animate-in fade-in duration-200">
-            <span className="inline-block px-3 py-1 rounded-full text-xs sm:text-sm font-mono tracking-widest text-[var(--accent-gold)] uppercase bg-neutral-800/80 border border-neutral-700">
+            <span className="inline-block px-3 py-1 rounded-md text-xs sm:text-sm font-mono tracking-widest text-[var(--accent-gold)] uppercase bg-neutral-800/80 border border-neutral-700">
               {currentSlide.label}
             </span>
             <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-white leading-tight">
@@ -177,7 +177,7 @@ export const PresentationPage: React.FC = () => {
         ) : (
           <div className="w-full space-y-4 sm:space-y-6 animate-in fade-in duration-150">
             <span
-              className={`inline-block font-mono text-xs sm:text-sm font-bold tracking-widest uppercase px-3 py-1 rounded-full ${
+              className={`inline-block font-mono text-xs sm:text-sm font-bold tracking-widest uppercase px-3 py-1 rounded-md ${
                 currentSlide.type === 'chorus'
                   ? 'bg-amber-950/80 text-amber-300 border border-amber-800/60'
                   : 'bg-neutral-800/80 text-[var(--accent-gold)] border border-neutral-700'
@@ -217,7 +217,7 @@ export const PresentationPage: React.FC = () => {
               type="button"
               onClick={() => setCurrentSlideIndex(idx)}
               title={s.label}
-              className={`h-2 rounded-full transition-all cursor-pointer ${
+              className={`h-2 rounded-sm transition-all cursor-pointer ${
                 idx === currentSlideIndex
                   ? 'w-6 bg-[var(--accent-gold)]'
                   : 'w-2 bg-neutral-700 hover:bg-neutral-500'

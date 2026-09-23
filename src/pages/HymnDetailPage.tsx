@@ -24,7 +24,7 @@ export const HymnDetailPage: React.FC = () => {
     if (hymn) {
       addRecentlyViewed(hymn.id);
       // Update page title
-      document.title = `Hymn ${hymn.number} — ${hymn.title} | Efik Hymn Book`;
+      document.title = `Hymn ${hymn.number}: ${hymn.title} | Efik Hymn Book`;
     }
   }, [hymn, addRecentlyViewed]);
 

@@ -5,7 +5,7 @@ import { BookOpen, Home, Search } from 'lucide-react';
 export const NotFoundPage: React.FC = () => {
   return (
     <div className="min-h-[60vh] flex flex-col items-center justify-center text-center p-6 max-w-md mx-auto">
-      <div className="w-16 h-16 rounded-full flex items-center justify-center bg-[var(--brand-primary-light)] text-[var(--brand-primary)] mb-5">
+      <div className="w-16 h-16 rounded-2xl flex items-center justify-center bg-[var(--brand-primary-light)] text-[var(--brand-primary)] mb-5">
         <BookOpen size={32} />
       </div>
       <span className="font-mono text-xs uppercase tracking-widest text-[var(--accent-gold)] font-bold">

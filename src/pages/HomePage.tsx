@@ -18,14 +18,14 @@ export const HomePage: React.FC = () => {
     <div className="space-y-10 sm:space-y-12 max-w-4xl mx-auto">
       {/* Compact Welcoming Hero */}
       <section className="text-center pt-2 sm:pt-6 pb-2">
-        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-widest text-[var(--accent-gold)] bg-[var(--accent-gold-light)] border border-[var(--accent-gold)]/20 mb-3">
+        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-semibold uppercase tracking-widest text-[var(--accent-gold)] bg-[var(--accent-gold-light)] border border-[var(--accent-gold)]/20 mb-3">
           Ñwed Ikwọ Efik
         </span>
         <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-[var(--text-primary)]">
           Which hymn do you want to sing?
         </h1>
         <p className="mt-2.5 text-sm sm:text-base text-[var(--text-secondary)] max-w-lg mx-auto">
-          Search, read and sing your favourite Efik hymns during worship, choir rehearsals, and personal devotion.
+          Search and read Efik hymns for church services, choir rehearsals, and personal devotion.
         </p>
 
         {/* Dominant Search Bar */}

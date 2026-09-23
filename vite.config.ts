@@ -16,7 +16,7 @@ export default defineConfig({
       },
       includeAssets: ['favicon.svg', 'pwa-192x192.svg', 'pwa-512x512.svg'],
       manifest: {
-        name: 'Efik Hymn Book — Ñwed Ikwọ Efik',
+        name: 'Efik Hymn Book: Ñwed Ikwọ Efik',
         short_name: 'Efik Hymns',
         description: 'Digitized Efik Hymn Book for church worship, personal devotion, and choir rehearsals.',
         theme_color: '#18422A',

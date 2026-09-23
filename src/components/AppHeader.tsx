@@ -50,7 +50,7 @@ export const AppHeader: React.FC = () => {
           <NavLink to="/favorites" className={navLinkClasses}>
             <span>Favorites</span>
             {favorites.length > 0 && (
-              <span className="text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-[var(--accent-gold)] text-white">
+              <span className="text-[10px] font-bold px-1.5 py-0.2 rounded-md bg-[var(--accent-gold)] text-white">
                 {favorites.length}
               </span>
             )}

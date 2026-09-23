@@ -30,7 +30,7 @@ export const FavoritesPage: React.FC = () => {
         </div>
 
         {favoriteHymns.length > 0 && (
-          <span className="text-xs font-semibold px-3 py-1.5 rounded-full bg-[var(--bg-surface)] border border-[var(--border-subtle)] text-[var(--text-secondary)] self-start sm:self-center">
+          <span className="text-xs font-semibold px-3 py-1.5 rounded-md bg-[var(--bg-surface)] border border-[var(--border-subtle)] text-[var(--text-secondary)] self-start sm:self-center">
             {favoriteHymns.length} {favoriteHymns.length === 1 ? 'hymn' : 'hymns'} saved
           </span>
         )}

@@ -42,7 +42,7 @@ export const MobileNavigation: React.FC = () => {
           <div className="relative mb-1">
             <Heart size={21} />
             {favorites.length > 0 && (
-              <span className="absolute -top-1 -right-2 text-[9px] font-bold px-1 rounded-full bg-[var(--accent-gold)] text-white min-w-[14px] text-center">
+              <span className="absolute -top-1 -right-2 text-[9px] font-bold px-1 rounded-xs bg-[var(--accent-gold)] text-white min-w-[14px] text-center">
                 {favorites.length}
               </span>
             )}

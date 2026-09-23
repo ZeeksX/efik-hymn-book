@@ -14,7 +14,7 @@ export const LoadingSkeleton: React.FC<LoadingSkeletonProps> = ({
       <div className="max-w-2xl mx-auto py-8 animate-pulse space-y-6">
         <div className="flex justify-between items-center mb-8">
           <div className="h-6 w-24 bg-[var(--border-subtle)] rounded"></div>
-          <div className="h-8 w-8 bg-[var(--border-subtle)] rounded-full"></div>
+          <div className="h-8 w-8 bg-[var(--border-subtle)] rounded-lg"></div>
         </div>
         <div className="text-center space-y-3">
           <div className="h-6 w-20 bg-[var(--border-subtle)] rounded mx-auto"></div>
@@ -67,7 +67,7 @@ export const LoadingSkeleton: React.FC<LoadingSkeletonProps> = ({
               <div className="h-3 w-1/2 bg-[var(--border-subtle)] rounded"></div>
             </div>
           </div>
-          <div className="w-8 h-8 rounded-full bg-[var(--border-subtle)]"></div>
+          <div className="w-8 h-8 rounded-lg bg-[var(--border-subtle)]"></div>
         </div>
       ))}
     </div>

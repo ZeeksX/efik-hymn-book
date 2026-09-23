@@ -40,7 +40,7 @@ export const CategoryCard: React.FC<CategoryCardProps> = ({ category }) => {
             <IconComponent size={20} />
           </div>
           {category.count !== undefined && (
-            <span className="text-xs font-medium text-[var(--text-tertiary)] bg-[var(--bg-main)] px-2.5 py-1 rounded-full border border-[var(--border-subtle)]">
+            <span className="text-xs font-medium text-[var(--text-tertiary)] bg-[var(--bg-main)] px-2.5 py-1 rounded-md border border-[var(--border-subtle)]">
               {formatHymnCount(category.count)}
             </span>
           )}

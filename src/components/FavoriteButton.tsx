@@ -37,7 +37,7 @@ export const FavoriteButton: React.FC<FavoriteButtonProps> = ({
       aria-label={active ? 'Remove from favorites' : 'Add to favorites'}
       aria-pressed={active}
       title={active ? 'Remove from favorites' : 'Add to favorites'}
-      className={`inline-flex items-center justify-center gap-1.5 rounded-full transition-all duration-200 cursor-pointer ${
+      className={`inline-flex items-center justify-center gap-1.5 rounded-lg transition-all duration-200 cursor-pointer ${
         showLabel
           ? 'px-3 py-1.5 text-sm font-medium border border-[var(--border-subtle)] hover:border-[var(--border-strong)] bg-[var(--bg-surface)]'
           : 'p-2 hover:bg-[var(--bg-surface-elevated)]'

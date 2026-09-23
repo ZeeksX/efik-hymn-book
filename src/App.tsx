@@ -13,6 +13,8 @@ import { CategoryDetailPage } from './pages/CategoryDetailPage';
 import { FavoritesPage } from './pages/FavoritesPage';
 import { AboutPage } from './pages/AboutPage';
 import { SettingsPage } from './pages/SettingsPage';
+import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
+import { TermsPage } from './pages/TermsPage';
 import { NotFoundPage } from './pages/NotFoundPage';
 
 export function App() {
@@ -35,6 +37,8 @@ export function App() {
               <Route path="favorites" element={<FavoritesPage />} />
               <Route path="about" element={<AboutPage />} />
               <Route path="settings" element={<SettingsPage />} />
+              <Route path="privacy" element={<PrivacyPolicyPage />} />
+              <Route path="terms" element={<TermsPage />} />
               <Route path="*" element={<NotFoundPage />} />
             </Route>
           </Routes>

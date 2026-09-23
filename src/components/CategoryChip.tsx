@@ -20,8 +20,8 @@ export const CategoryChip: React.FC<CategoryChipProps> = ({
   size = 'md',
   className = '',
 }) => {
-  const baseClasses = `inline-flex items-center gap-1.5 rounded-full font-medium transition-colors select-none ${
-    size === 'sm' ? 'px-3 py-1 text-xs' : 'px-4 py-1.5 text-xs sm:text-sm'
+  const baseClasses = `inline-flex items-center gap-1.5 rounded-lg font-medium transition-colors select-none ${
+    size === 'sm' ? 'px-3 py-1 text-xs' : 'px-3.5 py-1.5 text-xs sm:text-sm'
   } ${
     isActive
       ? 'bg-[var(--brand-primary)] text-white shadow-xs'
@@ -33,7 +33,7 @@ export const CategoryChip: React.FC<CategoryChipProps> = ({
       <span>{label}</span>
       {count !== undefined && (
         <span
-          className={`text-[10px] sm:text-xs rounded-full px-1.5 py-0.2 ${
+          className={`text-[10px] sm:text-xs rounded-md px-1.5 py-0.2 ${
             isActive
               ? 'bg-white/20 text-white'
               : 'bg-[var(--bg-surface-elevated)] text-[var(--text-tertiary)]'

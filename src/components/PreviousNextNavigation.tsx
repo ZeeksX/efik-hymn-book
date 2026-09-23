@@ -22,7 +22,7 @@ export const PreviousNextNavigation: React.FC<PreviousNextNavigationProps> = ({
             to={`/hymns/${prevHymn.id}`}
             className="group flex-1 flex items-center gap-3 p-3.5 rounded-xl border border-[var(--border-subtle)] bg-[var(--bg-surface)] hover:bg-[var(--bg-surface-elevated)] hover:border-[var(--brand-primary)]/30 transition-all text-left"
           >
-            <div className="w-8 h-8 rounded-full flex items-center justify-center bg-[var(--bg-surface-elevated)] group-hover:bg-[var(--brand-primary-light)] text-[var(--brand-primary)] shrink-0 transition-colors">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-[var(--bg-surface-elevated)] group-hover:bg-[var(--brand-primary-light)] text-[var(--brand-primary)] shrink-0 transition-colors">
               <ArrowLeft size={16} />
             </div>
             <div className="min-w-0">
@@ -52,7 +52,7 @@ export const PreviousNextNavigation: React.FC<PreviousNextNavigationProps> = ({
                 {nextHymn.title}
               </p>
             </div>
-            <div className="w-8 h-8 rounded-full flex items-center justify-center bg-[var(--bg-surface-elevated)] group-hover:bg-[var(--brand-primary-light)] text-[var(--brand-primary)] shrink-0 transition-colors">
+            <div className="w-8 h-8 rounded-lg flex items-center justify-center bg-[var(--bg-surface-elevated)] group-hover:bg-[var(--brand-primary-light)] text-[var(--brand-primary)] shrink-0 transition-colors">
               <ArrowRight size={16} />
             </div>
           </Link>

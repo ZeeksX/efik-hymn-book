@@ -56,7 +56,7 @@ export const CategoryDetailPage: React.FC = () => {
           {category.description}
         </p>
         <div className="pt-2">
-          <span className="inline-block text-xs font-semibold px-2.5 py-1 rounded-full bg-[var(--brand-primary-light)] text-[var(--brand-primary)]">
+          <span className="inline-block text-xs font-semibold px-2.5 py-1 rounded-md bg-[var(--brand-primary-light)] text-[var(--brand-primary)]">
             {hymns.length} {hymns.length === 1 ? 'hymn' : 'hymns'} available
           </span>
         </div>

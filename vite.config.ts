@@ -11,8 +11,11 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       strategies: 'generateSW',
+      // A development service worker can cache an older app shell and make
+      // the first preview load appear stale. PWA behavior is still generated
+      // for production builds, where autoUpdate keeps installed apps current.
       devOptions: {
-        enabled: true,
+        enabled: false,
       },
       includeAssets: ['favicon.svg', 'pwa-192x192.svg', 'pwa-512x512.svg'],
       manifest: {
